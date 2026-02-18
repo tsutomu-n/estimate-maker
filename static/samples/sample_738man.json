@@ -1,53 +1,158 @@
 {
-  "version": "1.0.0",
-  "createdAt": "2026-02-18T12:00:00Z",
-  "customerName": "天野 茂",
-  "title": "木造農家住宅等 解体撤去工事",
-  "place": "群馬県甘楽郡下仁田町 地内",
-  "date": "2026年 1月 16日",
-  "discount": -40909,
-  "sections": [
-    {
-      "title": "1. 建物解体・撤去工",
-      "items": [
-        { "name": "①農家住宅解体（小運搬・積込共）", "quantity": 15.0, "unit": "坪", "unitPrice": 25000, "note": "手作業・狭所作業割増" },
-        { "name": "②農家住宅解体（基礎共）", "quantity": 7.5, "unit": "坪", "unitPrice": 22000, "note": "倉庫・物置等" },
-        { "name": "③専用住宅解体（基礎共）", "quantity": 27.0, "unit": "坪", "unitPrice": 27000, "note": "母屋・スケルトン解体" },
-        { "name": "植栽撤去（小木）", "quantity": 1.0, "unit": "式", "unitPrice": 45000, "note": "※指定項目" },
-        { "name": "分別積込費", "quantity": 40.0, "unit": "m3", "unitPrice": 2500, "note": "※指定項目" },
-        { "name": "石綿含有建材 除去工（レベル3）", "quantity": 1, "unit": "式", "unitPrice": 250000, "note": "屋根・軒天 手作業剥離" },
-        { "name": "残置物 分別・搬出作業費", "quantity": 49.5, "unit": "坪", "unitPrice": 18000, "note": "屋内一般ゴミ・産廃仕分" }
-      ]
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/estimate.json",
+  "title": "Estimate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "issuer", "client", "project", "sections", "totals", "notes"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["estimateId", "issuedDate", "validUntil"],
+      "properties": {
+        "estimateId": {
+          "type": "string",
+          "description": "見積書ID（社内採番）。例: 2026-000123"
+        },
+        "issuedDate": {
+          "type": "string",
+          "format": "date",
+          "description": "発行日（YYYY-MM-DD）"
+        },
+        "validUntil": {
+          "type": "string",
+          "description": "有効期限（例: 発行日より3ヶ月 / YYYY-MM-DD）"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["JPY"],
+          "default": "JPY"
+        }
+      }
     },
-    {
-      "title": "2. 発生材処分費",
-      "items": [
-        { "name": "一般廃棄物 収集運搬・処分費", "quantity": 1, "unit": "式", "unitPrice": 1200000, "note": "※多量残置物 許可業者委託" },
-        { "name": "石膏ボード", "quantity": 15, "unit": "m3", "unitPrice": 28000, "note": "※指定単価" },
-        { "name": "コンクリートガラ（有筋・無筋）", "quantity": 30, "unit": "m3", "unitPrice": 5400, "note": "※指定単価" },
-        { "name": "タタミ・繊維くず", "quantity": 30, "unit": "枚", "unitPrice": 2700, "note": "※指定単価" },
-        { "name": "石綿含有産業廃棄物（レベル3）", "quantity": 6, "unit": "m3", "unitPrice": 35000, "note": "安定型処分場（飛散防止）" },
-        { "name": "木くず（解体材・造作材）", "quantity": 80, "unit": "m3", "unitPrice": 4500, "note": "群馬県内チップ工場" },
-        { "name": "廃プラ・ガラス陶磁器（混合）", "quantity": 30, "unit": "m3", "unitPrice": 22000, "note": "建設系混合廃棄物" },
-        { "name": "家電リサイクル・フロン回収費", "quantity": 1, "unit": "式", "unitPrice": 35000, "note": "法定フロン回収・破壊" }
-      ]
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["companyName", "department", "representative", "tel", "fax", "address"],
+      "properties": {
+        "companyName": { "type": "string" },
+        "department": { "type": "string" },
+        "representative": { "type": "string" },
+        "tel": { "type": "string" },
+        "fax": { "type": "string" },
+        "address": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["postalCode", "prefecture", "city", "street"],
+          "properties": {
+            "postalCode": {
+              "type": "string",
+              "pattern": "^\\d{3}-\\d{4}$",
+              "description": "例: 370-2606"
+            },
+            "prefecture": { "type": "string" },
+            "city": { "type": "string" },
+            "street": { "type": "string" }
+          }
+        }
+      }
     },
-    {
-      "title": "3. 運搬費",
-      "items": [
-        { "name": "場内小運搬・重機回送費", "quantity": 1, "unit": "式", "unitPrice": 150000, "note": "大型重機・回送車" },
-        { "name": "産廃・残置物 収集運搬費", "quantity": 1, "unit": "式", "unitPrice": 400000, "note": "処分場遠隔地対応" }
-      ]
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "description": "宛名（個人名/法人名）" },
+        "honorific": {
+          "type": "string",
+          "enum": ["様", "御中"],
+          "default": "様"
+        }
+      }
     },
-    {
-      "title": "4. 仮設・雑工・諸経費",
-      "items": [
-        { "name": "仮設工事（北・西側）", "quantity": 118.8, "unit": "m2", "unitPrice": 1300, "note": "※指定項目（足場等）" },
-        { "name": "石綿粉塵 飛散防止対策費", "quantity": 1, "unit": "式", "unitPrice": 120000, "note": "湿潤化・保護具・掲示板" },
-        { "name": "整地・場内片付け清掃", "quantity": 1, "unit": "式", "unitPrice": 80000, "note": "仕上げ転圧" },
-        { "name": "建設リサイクル法 届出代行費", "quantity": 1, "unit": "式", "unitPrice": 30000, "note": "※法定項目（追加）" },
-        { "name": "法定福利・届出管理費", "quantity": 1, "unit": "式", "unitPrice": 132560, "note": "端数調整含" }
-      ]
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "location"],
+      "properties": {
+        "title": { "type": "string", "description": "工事名称" },
+        "location": { "type": "string", "description": "工事場所" }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/section" }
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subTotalExclTax", "discountExclTax", "totalExclTax", "taxRate", "taxAmount", "totalInclTax"],
+      "properties": {
+        "subTotalExclTax": { "type": "integer", "minimum": 0, "description": "税抜小計（円）" },
+        "discountExclTax": { "type": "integer", "maximum": 0, "description": "値引き（税抜、円、マイナス）" },
+        "totalExclTax": { "type": "integer", "minimum": 0, "description": "差引税抜金額（円）" },
+        "taxRate": { "type": "number", "minimum": 0, "maximum": 1, "description": "消費税率（例: 0.10）" },
+        "taxAmount": { "type": "integer", "minimum": 0, "description": "消費税額（円）" },
+        "totalInclTax": { "type": "integer", "minimum": 0, "description": "合計（税込、円）" }
+      }
+    },
+    "notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["specialTerms"],
+      "properties": {
+        "specialTerms": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" },
+          "description": "備考・特記事項（箇条書き）"
+        }
+      }
     }
-  ]
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "title", "items", "subTotalExclTax"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": ["1", "2", "3", "4"],
+          "description": "セクション番号"
+        },
+        "title": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/lineItem" }
+        },
+        "subTotalExclTax": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "セクション小計（税抜、円）"
+        }
+      }
+    },
+    "lineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "quantity", "unit", "unitPriceExclTax", "amountExclTax"],
+      "properties": {
+        "name": { "type": "string", "description": "工事名/摘要" },
+        "quantity": { "type": "number", "minimum": 0 },
+        "unit": { "type": "string", "description": "単位（坪, 式, m3, m2, 枚 など）" },
+        "unitPriceExclTax": { "type": "integer", "minimum": 0, "description": "単価（税抜、円）" },
+        "amountExclTax": { "type": "integer", "minimum": 0, "description": "金額（税抜、円）" },
+        "remarks": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "分類タグ（任意）。例: 残置物/一般廃棄物/石綿L3"
+        }
+      }
+    }
+  }
 }
