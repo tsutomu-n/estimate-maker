@@ -14,57 +14,56 @@
       paper: {
         width: "210mm",
         minHeight: "297mm",
-        pagePadding: "12mm",
-        pagePrintPadding: "12mm",
-        headerColumns: "minmax(0,1fr)_minmax(0,290px)",
-        headerGap: "10mm",
-        totalWidth: "55%"
+        pagePadding: "15mm",
+        pagePrintPadding: "15mm",
+        headerColumns: "minmax(0,1fr)_minmax(0,240px)",
+        headerGap: "6mm",
+        totalWidth: "50%"
       },
       typography: {
-        bodyFontSize: "10.5pt",
-        bodyLineHeight: "1.35",
-        customerName: "20px",
-        docTitleTop: "2px",
-        docTitleRight: "0px",
-        headingMeta: "9.5pt",
+        bodyFontSize: "9pt",
+        bodyLineHeight: "1.3",
+        customerName: "16pt",
+        headingMeta: "9pt",
         companyTitle: "11pt",
-        permitText: "10px",
-        permitTopSpacing: "0.45rem",
-        companyBlockTopPadding: "4.4rem",
-        noteText: "9pt",
-        tableText: "10.0pt",
-        sectionTitle: "10.5pt",
-        docTitle: "32pt",
-        notesTitle: "12pt",
-        docTitleTracking: "0.22em",
-        headerCustomerBottom: "0.55rem",
-        amountValue: "30px"
+        permitText: "8pt",
+        permitTopSpacing: "0.3rem",
+        noteText: "8pt",
+        tableText: "9pt",
+        sectionTitle: "9.5pt",
+        docTitle: "28pt",
+        notesTitle: "10pt",
+        docTitleTracking: "0.4em",
+        headerCustomerBottom: "0.4rem",
+        amountValue: "22pt",
+        amountLabel: "13pt"
       },
       spacing: {
-        tablePadH: "0.35rem",
-        tablePadV: "0.45rem",
-        headerGapY: "0.5rem",
-        headerBottom: "8px",
-        footerGap: "0.6rem",
-        metaGap: "0.25rem",
-        dateGap: "2px",
-        headerMetaLeft: "3px",
-        tablePadBase: "0.35rem",
-        tablePadRightName: "0.45rem",
-        tablePadRightAmount: "0.4rem",
+        tablePadH: "3px",
+        tablePadV: "3px",
+        headerGapY: "0.3rem",
+        headerBottom: "6px",
+        footerGap: "0.4rem",
+        metaGap: "0.2rem",
+        dateGap: "1px",
+        headerMetaLeft: "2px",
+        tablePadBase: "3px",
+        tablePadRightName: "4px",
+        tablePadRightAmount: "4px",
         rowSpacing: "1",
-        sectionGap: "0.35rem",
-        sectionBodyGap: "0.25rem",
+        sectionGap: "0.3rem",
+        sectionBodyGap: "0.2rem",
         sectionPaddingBottom: "1",
-        totalMarginBottom: "10"
+        totalMarginBottom: "8"
       },
       table: {
         cols: {
-          name: "39%",
-          qty: "13%",
-          unit: "11%",
-          unitPrice: "14%",
-          amount: "23%"
+          name: "30%",
+          qty: "8%",
+          unit: "8%",
+          unitPrice: "12%",
+          amount: "18%",
+          note: "24%"
         }
       }
     }
@@ -82,11 +81,8 @@
     --a4-font-body:${tokens.typography.bodyFontSize};
     --a4-lh-body:${tokens.typography.bodyLineHeight};
     --a4-font-customer:${tokens.typography.customerName};
-    --a4-doc-top:${tokens.typography.docTitleTop};
-    --a4-doc-right:${tokens.typography.docTitleRight};
     --a4-font-meta:${tokens.typography.headingMeta};
     --a4-font-company:${tokens.typography.companyTitle};
-    --a4-company-offset-top:${tokens.typography.companyBlockTopPadding};
     --a4-font-permit:${tokens.typography.permitText};
     --a4-permit-pt:${tokens.typography.permitTopSpacing};
     --a4-font-note:${tokens.typography.noteText};
@@ -96,6 +92,7 @@
     --a4-track-doc-title:${tokens.typography.docTitleTracking};
     --a4-customer-bottom:${tokens.typography.headerCustomerBottom};
     --a4-font-amount:${tokens.typography.amountValue};
+    --a4-font-amount-label:${tokens.typography.amountLabel};
     --a4-section-size:${tokens.typography.sectionTitle};
     --a4-pad-base:${tokens.spacing.tablePadBase};
     --a4-pad-h:${tokens.spacing.tablePadH};
@@ -117,6 +114,7 @@
     --a4-col-unit:${tokens.table.cols.unit};
     --a4-col-unitPrice:${tokens.table.cols.unitPrice};
     --a4-col-amount:${tokens.table.cols.amount};
+    --a4-col-note:${tokens.table.cols.note};
   `);
 
   // =================================================================
@@ -129,7 +127,7 @@
   const tableWrapper = "border border-black";
   const cellBorder = "border-r border-b border-black last:border-r-0";
   const headerStyle = "bg-transparent border-b border-black font-bold font-ms-gothic";
-  const totalLabelClass = "text-lg font-ms-gothic font-bold mr-8 opacity-90";
+  const totalLabelClass = "font-ms-gothic font-bold opacity-90";
   const grandTotalLineLabelClass = "pl-2 font-ms-gothic";
   const grandTotalStyle = "border border-black py-2";
 
@@ -169,63 +167,73 @@
   <!-- ========================================== -->
   <!-- ヘッダーエリア -->
   <!-- ========================================== -->
-  <header class="grid items-start mb-10 pb-2 border-b-2 {borderColor}" style="grid-template-columns: var(--a4-header-columns); column-gap: var(--a4-header-gap);">
-    <!-- 宛名・工事情報 -->
-    <div class="min-w-0 pt-2">
-      <p class="mb-1 ml-1" style="font-size: var(--a4-font-meta);margin-bottom: var(--a4-date-gap);">{estimate.date}</p>
-      <h1 class="font-bold font-ms-gothic border-b {subBorderColor} inline-block pb-1 pr-8" style="font-size: var(--a4-font-customer); margin-bottom: var(--a4-customer-bottom);">
-        {estimate.customerName} <span class="text-base font-normal">様</span>
-      </h1>
-      <div class="pl-1" style="display:grid; gap: var(--a4-meta-gap); font-size: var(--a4-font-meta);">
-        <div class="flex items-start">
-          <span class="w-24 shrink-0 opacity-70" style="margin-left: var(--a4-header-meta-left);">工事名称：</span>
-          <span class="font-medium">{estimate.title}</span>
-        </div>
-        <div class="flex items-start">
-          <span class="w-24 shrink-0 opacity-70" style="margin-left: var(--a4-header-meta-left);">工事場所：</span>
-          <span class="break-words w-full pr-4">{estimate.place}</span>
-        </div>
-      </div>
+  <header class="mb-6">
+
+    <!-- ① 御見積書タイトル（全幅・中央） -->
+    <div class="text-center mb-4">
+      <h2 class="font-bold font-ms-gothic inline-block" style="font-size: var(--a4-font-doc-title); letter-spacing: var(--a4-track-doc-title); line-height: 1;">御 見 積 書</h2>
     </div>
 
-    <!-- 自社情報 (常に明朝体・右寄せ) -->
-    <div class="min-w-0 text-right relative" style="padding-top: var(--a4-company-offset-top);">
-        <h2 class="{docTitleClass} mb-3" style="font-size: var(--a4-font-doc-title);letter-spacing: var(--a4-track-doc-title);position: absolute; top: var(--a4-doc-top); right: var(--a4-doc-right);">御見積書</h2>
+    <!-- ② 区切り線 -->
+    <hr class="border-t-2 border-black mb-4" />
 
-      <div class="leading-tight" style="display:grid; gap: var(--a4-meta-gap); font-size: var(--a4-font-table);">
-        <p class="font-bold tracking-wide font-ms-gothic" style="font-size: var(--a4-font-company);">西毛建設株式会社</p>
-        <p>代表取締役　橳島　努</p>
-        <p class="mt-1">〒370-2601</p>
-        <!-- 住所は折り返してでも全て表示 -->
-        <p class="whitespace-normal break-words leading-tight">
-          群馬県甘楽郡下仁田町大字川井109-1
-        </p>
-        <p>TEL: 0274-82-3366 / FAX: 0274-82-3566</p>
-        
-        <!-- 建設業許可番号 (必須) -->
-        <div class="pt-2 border-t {subBorderColor} leading-tight opacity-90" style="font-size: var(--a4-font-permit); margin-top: var(--a4-permit-pt);">
-          <p>群馬県知事 許可（般-xx）第xxxxx号</p>
-          <p>産業廃棄物収集運搬業許可 第xxxxxxxx号</p>
+    <!-- ③ 2カラム：宛名・工事情報 ／ 自社情報 -->
+    <div class="grid items-start pb-3 border-b-2 {borderColor}" style="grid-template-columns: var(--a4-header-columns); column-gap: var(--a4-header-gap);">
+
+      <!-- 宛名・工事情報 -->
+      <div class="min-w-0 pt-1">
+        <p class="mb-1 ml-1" style="font-size: var(--a4-font-meta); margin-bottom: var(--a4-date-gap);">{estimate.date}</p>
+        <h1 class="font-bold font-ms-gothic border-b {subBorderColor} inline-block pb-1 pr-8" style="font-size: var(--a4-font-customer); margin-bottom: var(--a4-customer-bottom);">
+          {estimate.customerName} <span class="text-base font-normal">様</span>
+        </h1>
+        <div class="pl-1 mt-1" style="display:grid; gap: var(--a4-meta-gap); font-size: var(--a4-font-meta);">
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 opacity-70" style="margin-left: var(--a4-header-meta-left);">工事名称：</span>
+            <span class="font-medium">{estimate.title}</span>
+          </div>
+          <div class="flex items-start">
+            <span class="w-24 shrink-0 opacity-70" style="margin-left: var(--a4-header-meta-left);">工事場所：</span>
+            <span class="break-words w-full pr-4">{estimate.place}</span>
+          </div>
         </div>
       </div>
 
-      <!-- 電子印鑑 -->
-      {#if showSeal}
-        <img 
-          src="/hanko.png" 
-          class="absolute top-20 right-0 w-20 opacity-80 mix-blend-multiply z-10" 
-          alt="社印" 
-        />
-      {/if}
+      <!-- 自社情報（右寄せ・上揃え） -->
+      <div class="min-w-0 text-right relative pt-1">
+        <div class="leading-tight" style="display:grid; gap: var(--a4-meta-gap); font-size: var(--a4-font-table);">
+          <p class="font-bold tracking-wide font-ms-gothic" style="font-size: var(--a4-font-company);">西毛建設株式会社</p>
+          <p>代表取締役　橳島　努</p>
+          <p class="mt-1">〒370-2601</p>
+          <p class="whitespace-normal break-words leading-tight">
+            群馬県甘楽郡下仁田町大字川井109-1
+          </p>
+          <p>TEL: 0274-82-3366 / FAX: 0274-82-3566</p>
+          <!-- 建設業許可番号 -->
+          <div class="pt-1 border-t {subBorderColor} leading-tight opacity-90" style="font-size: var(--a4-font-permit); margin-top: var(--a4-permit-pt);">
+            <p>群馬県知事 許可（般-xx）第xxxxx号</p>
+            <p>産業廃棄物収集運搬業許可 第xxxxxxxx号</p>
+          </div>
+        </div>
+
+        <!-- 電子印鑑 -->
+        {#if showSeal}
+          <img
+            src="/hanko.png"
+            class="absolute top-0 right-0 w-20 opacity-80 mix-blend-multiply z-10"
+            alt="社印"
+          />
+        {/if}
+      </div>
+
     </div>
   </header>
 
   <!-- ========================================== -->
   <!-- 御見積金額 (強調表示) -->
   <!-- ========================================== -->
-  <div class="{grandTotalStyle} mb-8 text-center">
-      <span class="{totalLabelClass}">御見積金額 (税込)</span>
-    <span class="font-bold {numFont} tracking-tight underline decoration-1 underline-offset-8" style="font-size: var(--a4-font-amount);">
+  <div class="{grandTotalStyle} mb-8 flex items-center justify-center gap-6">
+    <span class="{totalLabelClass}" style="font-size: var(--a4-font-amount-label);">御見積金額 (税込)</span>
+    <span class="font-bold {numFont} tracking-tight" style="font-size: var(--a4-font-amount);">
       ¥ {formatMoney(estimate.grandTotal)} -
     </span>
   </div>
@@ -241,14 +249,16 @@
         <col style="width: var(--a4-col-unit);">
         <col style="width: var(--a4-col-unitPrice);">
         <col style="width: var(--a4-col-amount);">
+        <col style="width: var(--a4-col-note);">
       </colgroup>
       <thead>
         <tr class="{headerStyle}">
-	          <th class="text-left pl-2.5 font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">工事名 / 摘要</th>
-	          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">数量</th>
-	          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単位</th>
-	          <th class="text-right font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単価</th>
-          <th class="text-right pr-2.5 font-ms-gothic" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">金額</th>
+          <th class="text-left pl-2.5 font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">工事名 / 摘要</th>
+          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">数量</th>
+          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単位</th>
+          <th class="text-right font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単価</th>
+          <th class="text-right font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">金額</th>
+          <th class="text-left pl-2 font-ms-gothic" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">備考</th>
         </tr>
       </thead>
       <tbody>
@@ -256,21 +266,18 @@
           <!-- セクションヘッダー -->
           {#if section.items.length > 0}
             <tr class="break-inside-avoid">
-              <td colspan="5" class="{sectionHeadingClass}" style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-body-gap);">
+              <td colspan="6" class="{sectionHeadingClass}" style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-body-gap);">
                 <span class="font-ms-gothic" style="font-size: var(--a4-section-size);">{section.title}</span>
               </td>
             </tr>
           {/if}
-          
+
           <!-- 明細行 -->
           {#each section.items as item}
             <tr class="break-inside-avoid {detailsHoverClass}">
               <!-- 工事名 -->
-              <td class="pl-2 align-top {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);">
-                <span class="block">{item.name}</span>
-                {#if item.note}
-                  <span class="block mt-0.5 opacity-70 scale-95 origin-top-left" style="font-size: var(--a4-font-note);">{item.note}</span>
-                {/if}
+              <td class="pl-2 align-top {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h); font-size: var(--a4-font-table);">
+                {item.name}
               </td>
               <!-- 数量 -->
               <td class="text-center align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{item.quantity}</td>
@@ -279,8 +286,12 @@
               <!-- 単価 -->
               <td class="text-right align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{formatMoney(item.unitPrice)}</td>
               <!-- 金額 -->
-              <td class="text-right pr-2.5 align-top font-bold {numFont} border-b border-black" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
-                  {formatMoney(item.amount)}
+              <td class="text-right align-top font-bold {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
+                {formatMoney(item.amount)}
+              </td>
+              <!-- 備考 -->
+              <td class="pl-2 align-top border-b border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h); font-size: var(--a4-font-note); opacity: 0.8;">
+                {item.note}
               </td>
             </tr>
           {/each}
@@ -288,10 +299,10 @@
           <!-- セクション小計 -->
           {#if section.items.length > 0}
             <tr class="break-inside-avoid border-b-2 border-black border-t">
-              <!-- 役所風なら小計欄も罫線で区切る -->
               <td colspan="3" class="border-r border-black"></td>
               <td class="p-1 text-center text-xs font-ms-gothic border-r border-black">小計</td>
               <td class="p-1 text-right font-bold pr-4 {numFont} border-b border-black opacity-90">{formatMoney(section.subTotal)}</td>
+              <td class="border-b border-black"></td>
             </tr>
           {/if}
         {/each}
