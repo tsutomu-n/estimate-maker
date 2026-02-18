@@ -21,8 +21,8 @@
 
   // 2. 数値用フォント (ここが重要)
   // 数値は体裁を揃えるため明朝体ベースで等幅寄せ
-  let numFont = $derived(isClassic 
-    ? "font-ms-mincho tabular-nums tracking-widest" 
+let numFont = $derived(isClassic 
+    ? "font-ms-mincho tabular-nums tracking-tight" 
     : "font-ms-mincho tracking-normal"
   );
 
@@ -135,62 +135,64 @@
   <!-- ========================================== -->
   <!-- 明細テーブル -->
   <!-- ========================================== -->
-  <table class="w-full border-collapse text-sm mb-6 {tableWrapper}">
-    <thead>
-      <tr class="{headerStyle} print:bg-transparent">
-        <th class="p-2 text-left w-[45%] pl-4 font-ms-gothic {isClassic ? 'border-r border-black' : ''}">工事名 / 摘要</th>
-        <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">数量</th>
-        <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単位</th>
-        <th class="p-2 text-right w-[15%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単価</th>
-        <th class="p-2 text-right w-[20%] pr-4 font-ms-gothic">金額</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each estimate.sections as section}
-        <!-- セクションヘッダー -->
-        {#if section.items.length > 0}
-          <tr class="break-inside-avoid">
-            <td colspan="5" class="pt-4 pb-1 pl-2 font-bold border-b {borderColor} {isClassic ? 'bg-gray-100 print:bg-transparent' : ''}">
-              <span class="font-ms-gothic">{section.title}</span>
-            </td>
-          </tr>
-        {/if}
-        
-        <!-- 明細行 -->
-        {#each section.items as item}
-          <tr class="break-inside-avoid hover:bg-slate-50 print:hover:bg-transparent">
-            <!-- 工事名 -->
-            <td class="p-2 pl-6 align-top {cellBorder}">
-              <span class="block">{item.name}</span>
-              {#if item.note}
-                <span class="block text-[10px] mt-0.5 opacity-70 scale-95 origin-top-left">{item.note}</span>
-              {/if}
-            </td>
-            <!-- 数量 -->
-            <td class="p-2 text-center align-top {numFont} {cellBorder}">{item.quantity}</td>
-            <!-- 単位 -->
-            <td class="p-2 text-center text-xs align-top {cellBorder}">{item.unit}</td>
-            <!-- 単価 -->
-            <td class="p-2 text-right align-top {numFont} {cellBorder}">{formatMoney(item.unitPrice)}</td>
-            <!-- 金額 -->
-            <td class="p-2 text-right pr-4 align-top font-bold {numFont} {isClassic ? 'border-b border-black' : 'border-b border-slate-200'}">
-                {formatMoney(item.amount)}
-            </td>
-          </tr>
-        {/each}
+  <div class="w-full overflow-x-auto print:overflow-visible mb-6">
+    <table class="w-full min-w-[700px] border-collapse text-sm {tableWrapper}">
+      <thead>
+        <tr class="{headerStyle} print:bg-transparent">
+          <th class="p-2 text-left w-[45%] pl-4 font-ms-gothic {isClassic ? 'border-r border-black' : ''}">工事名 / 摘要</th>
+          <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">数量</th>
+          <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単位</th>
+          <th class="p-2 text-right w-[15%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単価</th>
+          <th class="p-2 text-right w-[20%] pr-4 font-ms-gothic">金額</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each estimate.sections as section}
+          <!-- セクションヘッダー -->
+          {#if section.items.length > 0}
+            <tr class="break-inside-avoid">
+              <td colspan="5" class="pt-4 pb-1 pl-2 font-bold border-b {borderColor} {isClassic ? 'bg-gray-100 print:bg-transparent' : ''}">
+                <span class="font-ms-gothic">{section.title}</span>
+              </td>
+            </tr>
+          {/if}
+          
+          <!-- 明細行 -->
+          {#each section.items as item}
+            <tr class="break-inside-avoid hover:bg-slate-50 print:hover:bg-transparent">
+              <!-- 工事名 -->
+              <td class="p-2 pl-6 align-top {cellBorder}">
+                <span class="block">{item.name}</span>
+                {#if item.note}
+                  <span class="block text-[10px] mt-0.5 opacity-70 scale-95 origin-top-left">{item.note}</span>
+                {/if}
+              </td>
+              <!-- 数量 -->
+              <td class="p-2 text-center align-top {numFont} {cellBorder}">{item.quantity}</td>
+              <!-- 単位 -->
+              <td class="p-2 text-center text-xs align-top {cellBorder}">{item.unit}</td>
+              <!-- 単価 -->
+              <td class="p-2 text-right align-top {numFont} {cellBorder}">{formatMoney(item.unitPrice)}</td>
+              <!-- 金額 -->
+              <td class="p-2 text-right pr-4 align-top font-bold {numFont} {isClassic ? 'border-b border-black' : 'border-b border-slate-200'}">
+                  {formatMoney(item.amount)}
+              </td>
+            </tr>
+          {/each}
 
-        <!-- セクション小計 -->
-        {#if section.items.length > 0}
-          <tr class="break-inside-avoid border-b-2 {isClassic ? 'border-black border-t' : 'border-slate-400'}">
-            <!-- 役所風なら小計欄も罫線で区切る -->
-            <td colspan="3" class="{isClassic ? 'border-r border-black' : ''}"></td>
-            <td class="p-1 text-center text-xs font-ms-gothic {isClassic ? 'border-r border-black' : 'opacity-60'}">小計</td>
-            <td class="p-1 text-right font-bold pr-4 {numFont} opacity-90">{formatMoney(section.subTotal)}</td>
-          </tr>
-        {/if}
-      {/each}
-    </tbody>
-  </table>
+          <!-- セクション小計 -->
+          {#if section.items.length > 0}
+            <tr class="break-inside-avoid border-b-2 {isClassic ? 'border-black border-t' : 'border-slate-400'}">
+              <!-- 役所風なら小計欄も罫線で区切る -->
+              <td colspan="3" class="{isClassic ? 'border-r border-black' : ''}"></td>
+              <td class="p-1 text-center text-xs font-ms-gothic {isClassic ? 'border-r border-black' : 'opacity-60'}">小計</td>
+              <td class="p-1 text-right font-bold pr-4 {numFont} opacity-90">{formatMoney(section.subTotal)}</td>
+            </tr>
+          {/if}
+        {/each}
+      </tbody>
+    </table>
+  </div>
 
   <!-- ========================================== -->
   <!-- 合計計算ブロック (右寄せ・縦積み) -->
