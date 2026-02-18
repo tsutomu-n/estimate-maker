@@ -252,7 +252,7 @@
 </script>
 
 <!-- A4用紙設定 -->
-<div class="w-[210mm] mx-auto bg-white {sheetPadding} {sheetPrintPadding} shadow-lg print:shadow-none print:w-[210mm] print:h-auto print:min-h-0 print:max-h-[297mm] print:overflow-visible print:box-border print:m-0 relative group {baseStyle} {themeClass}" style={rootStyle}>
+<div class="w-[210mm] mx-auto bg-white {sheetPadding} {sheetPrintPadding} shadow-lg print:shadow-none print:w-[210mm] print:h-auto print:min-h-0 print:max-h-[297mm] print:overflow-visible box-border m-0 relative group {baseStyle} {themeClass}" style={rootStyle}>
   
   <!-- ▼ 印刷プレビュー操作ボタン (画面上のみ表示) -->
     <div class="absolute top-2 right-2 flex gap-2 print:hidden opacity-0 group-hover:opacity-100 transition-opacity z-50">

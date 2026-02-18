@@ -6,7 +6,7 @@
   const estimate = new Estimate();
   
   // ★追加: 役所モードの状態管理
-  let isClassicMode = $state(false);
+  let isClassicMode = $state(true);
 </script>
 
 <div class="flex flex-row min-h-screen bg-gray-800">
