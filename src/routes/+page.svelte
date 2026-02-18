@@ -5,8 +5,8 @@
 
   const estimate = new Estimate();
   
-  // ★追加: 役所モードの状態管理
-  let isClassicMode = $state(true);
+  // Bテーマ固定（官公庁提出向けレイアウト）
+  const isClassicMode = true;
 </script>
 
 <div class="flex flex-row min-h-screen bg-gray-800">
@@ -22,12 +22,7 @@
     <!-- ★追加: スタイル切り替えスイッチ -->
   <div class="mb-4 bg-white px-4 py-2 rounded-full shadow flex items-center gap-3 print:hidden">
     <span class="text-xs font-bold font-ms-gothic text-gray-500">スタイル:</span>
-    <label class="flex items-center cursor-pointer gap-2 select-none">
-      <input type="checkbox" bind:checked={isClassicMode} class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
-        <span class="text-sm font-medium font-ms-gothic {isClassicMode ? 'text-black' : 'text-slate-600'}">
-          {isClassicMode ? '役所提出用 (クラシック)' : '標準デザイン (モダン)'}
-        </span>
-      </label>
+    <span class="text-sm font-medium font-ms-gothic text-black">役所提出用 (固定:B)</span>
   </div>
 
     <!-- プレビュー本体 -->

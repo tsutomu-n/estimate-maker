@@ -3,14 +3,14 @@
   import { formatMoney } from '$lib/core/utils/money';
 
   // Props definition
-  let { estimate, isClassic = false }: { estimate: Estimate, isClassic?: boolean } = $props();
+  let { estimate, isClassic = true }: { estimate: Estimate, isClassic?: boolean } = $props();
 
   // 電子印鑑の表示状態 (デフォルトOFF)
   let showSeal = $state(false);
 
-  // デザイン定義（A4印刷固定値）
+  // Bテーマ（固定）
   const A4_PRINT_TOKENS = {
-    classic: {
+    b: {
       paper: {
         width: "210mm",
         minHeight: "297mm",
@@ -24,10 +24,13 @@
         bodyFontSize: "10.5pt",
         bodyLineHeight: "1.35",
         customerName: "20px",
+        docTitleTop: "2px",
+        docTitleRight: "0px",
         headingMeta: "9.5pt",
         companyTitle: "11pt",
         permitText: "10px",
         permitTopSpacing: "0.45rem",
+        companyBlockTopPadding: "4.4rem",
         noteText: "9pt",
         tableText: "10.0pt",
         sectionTitle: "10.5pt",
@@ -64,65 +67,10 @@
           amount: "23%"
         }
       }
-    },
-    modern: {
-      paper: {
-        width: "210mm",
-        minHeight: "297mm",
-        pagePadding: "15mm",
-        pagePrintPadding: "15mm",
-        headerColumns: "minmax(0,1fr)_minmax(0,290px)",
-        headerGap: "10mm",
-        totalWidth: "55%"
-      },
-      typography: {
-        bodyFontSize: "10.5pt",
-        bodyLineHeight: "1.45",
-        customerName: "20px",
-        headingMeta: "9.5pt",
-        companyTitle: "11pt",
-        permitText: "10px",
-        permitTopSpacing: "0.45rem",
-        noteText: "9pt",
-        tableText: "10.0pt",
-        sectionTitle: "10.5pt",
-        docTitle: "32pt",
-        notesTitle: "12pt",
-        docTitleTracking: "0.3em",
-        headerCustomerBottom: "0.55rem",
-        amountValue: "30px"
-      },
-      spacing: {
-        tablePadH: "0.35rem",
-        tablePadV: "0.45rem",
-        headerGapY: "0.5rem",
-        headerBottom: "8px",
-        footerGap: "0.6rem",
-        metaGap: "0.25rem",
-        dateGap: "2px",
-        headerMetaLeft: "3px",
-        tablePadBase: "0.35rem",
-        tablePadRightName: "0.45rem",
-        tablePadRightAmount: "0.4rem",
-        rowSpacing: "1",
-        sectionGap: "0.35rem",
-        sectionBodyGap: "0.25rem",
-        sectionPaddingBottom: "1",
-        totalMarginBottom: "10"
-      },
-      table: {
-        cols: {
-          name: "39%",
-          qty: "13%",
-          unit: "11%",
-          unitPrice: "14%",
-          amount: "23%"
-        }
-      }
     }
   } as const;
 
-  let tokens = $derived(isClassic ? A4_PRINT_TOKENS.classic : A4_PRINT_TOKENS.modern);
+  const tokens = A4_PRINT_TOKENS.b;
   let cssVars = $derived(`
     --a4-paper-width:${tokens.paper.width};
     --a4-paper-height:${tokens.paper.minHeight};
@@ -134,8 +82,11 @@
     --a4-font-body:${tokens.typography.bodyFontSize};
     --a4-lh-body:${tokens.typography.bodyLineHeight};
     --a4-font-customer:${tokens.typography.customerName};
+    --a4-doc-top:${tokens.typography.docTitleTop};
+    --a4-doc-right:${tokens.typography.docTitleRight};
     --a4-font-meta:${tokens.typography.headingMeta};
     --a4-font-company:${tokens.typography.companyTitle};
+    --a4-company-offset-top:${tokens.typography.companyBlockTopPadding};
     --a4-font-permit:${tokens.typography.permitText};
     --a4-permit-pt:${tokens.typography.permitTopSpacing};
     --a4-font-note:${tokens.typography.noteText};
@@ -169,90 +120,41 @@
   `);
 
   // =================================================================
-  // スタイル定義 (モダン vs クラシック 切り替えロジック)
+  // スタイル定義 (Bテーマ固定)
   // =================================================================
-  
-  // 1. ベースフォントと文字色
-  // 役所向けはMS明朝ベースで統一（標準/クラシック差分は色や罫線の扱い）
-  let baseStyle = $derived(isClassic 
-    ? "font-ms-mincho text-black"
-    : "font-ms-mincho text-slate-900"
-  );
+  const baseStyle = "font-ms-mincho text-black";
+  const numFont = "font-ms-mincho tabular-nums tracking-normal";
+  const borderColor = "border-black";
+  const subBorderColor = "border-black";
+  const tableWrapper = "border border-black";
+  const cellBorder = "border-r border-b border-black last:border-r-0";
+  const headerStyle = "bg-transparent border-b border-black font-bold font-ms-gothic";
+  const totalLabelClass = "text-lg font-ms-gothic font-bold mr-8 opacity-90";
+  const grandTotalLineLabelClass = "pl-2 font-ms-gothic";
+  const grandTotalStyle = "border border-black py-2";
 
-  // 2. 数値用フォント (ここが重要)
-  // 数値は体裁を揃えるため明朝体ベースで等幅寄せ
-  let numFont = $derived(isClassic 
-    ? "font-ms-mincho tabular-nums tracking-normal" 
-    : "font-ms-mincho tracking-normal"
-  );
-
-  // 3. 罫線 (Border) の色
-  let borderColor = $derived(isClassic ? "border-black" : "border-slate-800");
-  let subBorderColor = $derived(isClassic ? "border-black" : "border-slate-300");
-
-  // 4. テーブルの枠組み
-  // モダン: 上下の太線のみ / クラシック: 全セルに枠線 (格子状)
-  let tableWrapper = $derived(isClassic ? "border border-black" : "border-y-2 border-slate-800");
-  
-  // 5. セルの罫線
-  // モダン: 下線のみ / クラシック: 右線 + 下線 (Grid)
-  let cellBorder = $derived(isClassic 
-    ? "border-r border-b border-black last:border-r-0" 
-    : "border-b border-slate-200"
-  );
-
-  // 6. ヘッダー行の背景
-  let headerStyle = $derived(isClassic 
-    ? "bg-transparent border-b border-black font-bold font-ms-gothic" 
-    : "bg-slate-100 border-y border-slate-800 text-xs font-ms-gothic"
-  );
-
-  let totalLabelClass = $derived(isClassic
-    ? "text-lg font-ms-gothic font-bold mr-8 opacity-90"
-    : "text-lg font-ms-gothic font-bold mr-8 tracking-widest opacity-90"
-  );
-
-  let grandTotalLineLabelClass = $derived(isClassic
-    ? "pl-2 font-ms-gothic"
-    : "pl-2 font-ms-gothic tracking-widest"
-  );
-
-  // 7. 御見積金額のデザイン
-  let grandTotalStyle = $derived(isClassic
-    ? "border border-black py-2"
-    : "border-t-[3px] border-b-[1px] border-slate-800 py-4 bg-slate-50 underline decoration-1 underline-offset-8"
-  );
-
-  // 用紙内余白
-  let sheetPadding = $derived(isClassic ? "p-[12mm]" : "p-[15mm]");
-  let sheetPrintPadding = $derived(isClassic ? "print:p-[12mm]" : "print:p-[15mm]");
-  let rootStyle = $derived(`${cssVars};font-family: var(--app-serif-font);font-size: var(--a4-font-body);line-height: var(--a4-lh-body);`);
-  let themeClass = $derived(isClassic
-    ? "is-classic-estimate"
-    : "is-modern-estimate"
-  );
-  let sectionHeadingClass = $derived(isClassic
-    ? "pb-1 pl-2 font-bold border-b border-black"
-    : "pb-1 pl-2 bg-gray-100 border-b border-slate-200 print:bg-transparent"
-  );
-  let detailsHoverClass = $derived(isClassic
-    ? ""
-    : "hover:bg-slate-50 print:hover:bg-transparent"
-  );
-  let tableTextClass = $derived(isClassic ? "text-[10.5pt]" : "text-[10.5pt]");
-  let subtotalAccentClass = $derived(isClassic
-    ? ""
-    : "bg-slate-50 print:bg-transparent"
-  );
-  let docTitleClass = $derived(isClassic
-    ? "text-[30pt] font-bold mb-4 tracking-[0.22em] font-ms-gothic leading-none text-right"
-    : "text-[32pt] font-bold mb-4 tracking-[0.3em] font-ms-gothic leading-none text-right"
-  );
+  let rootStyle = $derived(`
+    ${cssVars};
+    width: var(--a4-paper-width);
+    min-height: var(--a4-paper-height);
+    padding: var(--a4-paper-pad);
+    margin: 0;
+    box-sizing: border-box;
+    font-family: var(--app-serif-font);
+    font-size: var(--a4-font-body);
+    line-height: var(--a4-lh-body);
+  `);
+  const themeClass = "is-classic-estimate";
+  const sectionHeadingClass = "pb-1 pl-2 font-bold border-b border-black";
+  const detailsHoverClass = "";
+  const tableTextClass = "text-[10.5pt]";
+  const subtotalAccentClass = "";
+  const docTitleClass = "text-[32pt] font-bold mb-4 tracking-[0.22em] font-ms-gothic leading-none text-right";
 
 </script>
 
 <!-- A4用紙設定 -->
-<div class="w-[210mm] mx-auto bg-white {sheetPadding} {sheetPrintPadding} shadow-lg print:shadow-none print:w-[210mm] print:h-auto print:min-h-0 print:max-h-[297mm] print:overflow-visible box-border m-0 relative group {baseStyle} {themeClass}" style={rootStyle}>
+<div class="mx-auto bg-white shadow-lg overflow-visible relative group {baseStyle} {themeClass}" style={rootStyle}>
   
   <!-- ▼ 印刷プレビュー操作ボタン (画面上のみ表示) -->
     <div class="absolute top-2 right-2 flex gap-2 print:hidden opacity-0 group-hover:opacity-100 transition-opacity z-50">
@@ -287,8 +189,8 @@
     </div>
 
     <!-- 自社情報 (常に明朝体・右寄せ) -->
-    <div class="min-w-0 text-right relative">
-        <h2 class="{docTitleClass} print:mb-3 print:tracking-[0.28em]" style="font-size: var(--a4-font-doc-title);letter-spacing: var(--a4-track-doc-title);">御見積書</h2>
+    <div class="min-w-0 text-right relative" style="padding-top: var(--a4-company-offset-top);">
+        <h2 class="{docTitleClass} mb-3" style="font-size: var(--a4-font-doc-title);letter-spacing: var(--a4-track-doc-title);position: absolute; top: var(--a4-doc-top); right: var(--a4-doc-right);">御見積書</h2>
 
       <div class="leading-tight" style="display:grid; gap: var(--a4-meta-gap); font-size: var(--a4-font-table);">
         <p class="font-bold tracking-wide font-ms-gothic" style="font-size: var(--a4-font-company);">西毛建設株式会社</p>
@@ -321,7 +223,7 @@
   <!-- ========================================== -->
   <!-- 御見積金額 (強調表示) -->
   <!-- ========================================== -->
-  <div class="{grandTotalStyle} mb-8 text-center print:bg-transparent">
+  <div class="{grandTotalStyle} mb-8 text-center">
       <span class="{totalLabelClass}">御見積金額 (税込)</span>
     <span class="font-bold {numFont} tracking-tight underline decoration-1 underline-offset-8" style="font-size: var(--a4-font-amount);">
       ¥ {formatMoney(estimate.grandTotal)} -
@@ -331,7 +233,7 @@
   <!-- ========================================== -->
   <!-- 明細テーブル -->
   <!-- ========================================== -->
-  <div class="w-full overflow-visible print:overflow-visible mb-6">
+  <div class="w-full overflow-visible mb-6">
     <table class="w-full min-w-full border-collapse table-fixed {tableTextClass} {tableWrapper}">
       <colgroup>
         <col style="width: var(--a4-col-name);">
@@ -341,11 +243,11 @@
         <col style="width: var(--a4-col-amount);">
       </colgroup>
       <thead>
-        <tr class="{headerStyle} print:bg-transparent">
-          <th class="text-left pl-2.5 font-ms-gothic {isClassic ? 'border-r border-black' : ''}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">工事名 / 摘要</th>
-          <th class="text-center font-ms-gothic {isClassic ? 'border-r border-black' : ''}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">数量</th>
-          <th class="text-center font-ms-gothic {isClassic ? 'border-r border-black' : ''}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単位</th>
-          <th class="text-right font-ms-gothic {isClassic ? 'border-r border-black' : ''}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単価</th>
+        <tr class="{headerStyle}">
+	          <th class="text-left pl-2.5 font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">工事名 / 摘要</th>
+	          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">数量</th>
+	          <th class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単位</th>
+	          <th class="text-right font-ms-gothic border-r border-black" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">単価</th>
           <th class="text-right pr-2.5 font-ms-gothic" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">金額</th>
         </tr>
       </thead>
@@ -377,7 +279,7 @@
               <!-- 単価 -->
               <td class="text-right align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{formatMoney(item.unitPrice)}</td>
               <!-- 金額 -->
-              <td class="text-right pr-2.5 align-top font-bold {numFont} {isClassic ? 'border-b border-black' : 'border-b border-slate-200'}" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
+              <td class="text-right pr-2.5 align-top font-bold {numFont} border-b border-black" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
                   {formatMoney(item.amount)}
               </td>
             </tr>
@@ -385,11 +287,11 @@
 
           <!-- セクション小計 -->
           {#if section.items.length > 0}
-            <tr class="break-inside-avoid border-b-2 {isClassic ? 'border-black border-t' : 'border-slate-400'}">
+            <tr class="break-inside-avoid border-b-2 border-black border-t">
               <!-- 役所風なら小計欄も罫線で区切る -->
-              <td colspan="3" class="{isClassic ? 'border-r border-black' : ''}"></td>
-              <td class="p-1 text-center text-xs font-ms-gothic {isClassic ? 'border-r border-black' : 'opacity-60'}">小計</td>
-              <td class="p-1 text-right font-bold pr-4 {numFont} opacity-90">{formatMoney(section.subTotal)}</td>
+              <td colspan="3" class="border-r border-black"></td>
+              <td class="p-1 text-center text-xs font-ms-gothic border-r border-black">小計</td>
+              <td class="p-1 text-right font-bold pr-4 {numFont} border-b border-black opacity-90">{formatMoney(section.subTotal)}</td>
             </tr>
           {/if}
         {/each}
@@ -402,35 +304,35 @@
   <!-- ========================================== -->
   <div class="flex justify-end break-inside-avoid mb-10">
     <!-- 役所風の場合、合計欄にも枠線を付ける -->
-    <div class="{isClassic ? 'border border-black' : ''}" style="width: var(--a4-total-width); font-size: var(--a4-font-table);">
+    <div class="border border-black" style="width: var(--a4-total-width); font-size: var(--a4-font-table);">
       
       <!-- 税抜小計 -->
       <div class="flex justify-between border-b {subBorderColor} py-1.5">
-        <span class="pl-2 font-ms-gothic {isClassic ? 'border-r border-black flex-1' : ''}">税抜小計</span>
+        <span class="pl-2 font-ms-gothic border-r border-black flex-1">税抜小計</span>
         <span class="pr-2 w-32 text-right {numFont}">{formatMoney(estimate.baseTotal)}</span>
       </div>
       
       <!-- 値引き -->
-      <div class="flex justify-between border-b {subBorderColor} py-1.5 {isClassic ? '' : 'text-red-700'}">
-        <span class="pl-2 font-ms-gothic {isClassic ? 'border-r border-black flex-1' : ''}">出精値引き</span>
+      <div class="flex justify-between border-b border-black py-1.5">
+        <span class="pl-2 font-ms-gothic border-r border-black flex-1">出精値引き</span>
         <span class="pr-2 w-32 text-right {numFont}">▲ {formatMoney(Math.abs(estimate.discount))}</span>
       </div>
       
       <!-- 工事価格 -->
       <div class="flex justify-between border-b {subBorderColor} py-1.5 font-bold">
-        <span class="pl-2 font-ms-gothic {isClassic ? 'border-r border-black flex-1' : ''}">工事価格（税抜）</span>
+        <span class="pl-2 font-ms-gothic border-r border-black flex-1">工事価格（税抜）</span>
         <span class="pr-2 w-32 text-right {numFont}">{formatMoney(estimate.constructionPrice)}</span>
       </div>
       
       <!-- 消費税 -->
       <div class="flex justify-between border-b {borderColor} py-1.5 opacity-80">
-        <span class="pl-2 font-ms-gothic {isClassic ? 'border-r border-black flex-1' : ''}">消費税 (10%)</span>
+        <span class="pl-2 font-ms-gothic border-r border-black flex-1">消費税 (10%)</span>
         <span class="pr-2 w-32 text-right {numFont}">{formatMoney(estimate.taxAmount)}</span>
       </div>
       
       <!-- 合計欄：二重線で強調 -->
       <div class="flex justify-between border-b-4 border-double {borderColor} py-3 font-bold {subtotalAccentClass} mt-1" style="padding-left: 0;padding-right: 0;">
-        <span class="{grandTotalLineLabelClass} {isClassic ? 'border-r border-black flex-1' : ''}">合計金額</span>
+        <span class="{grandTotalLineLabelClass} border-r border-black flex-1">合計金額</span>
         <span class="pr-2 w-32 text-right {numFont}">¥ {formatMoney(estimate.grandTotal)}</span>
       </div>
     </div>
@@ -439,8 +341,8 @@
   <!-- ========================================== -->
   <!-- 備考・条件 -->
   <!-- ========================================== -->
-  <div class="border {isClassic ? 'border-black' : 'border-slate-400'} p-5 break-inside-avoid" style="font-size: var(--a4-font-note);">
-    <h3 class="font-bold font-ms-gothic mb-3 border-b {isClassic ? 'border-black' : 'border-dashed border-slate-400'} inline-block" style="font-size: var(--a4-font-notes-title);">【 備考・条件 】</h3>
+  <div class="border border-black p-5 break-inside-avoid" style="font-size: var(--a4-font-note);">
+    <h3 class="font-bold font-ms-gothic mb-3 border-b border-black inline-block" style="font-size: var(--a4-font-notes-title);">【 備考・条件 】</h3>
     <ul class="list-disc list-outside ml-4 space-y-1.5 leading-relaxed opacity-90">
       <li>
         <span class="font-bold font-ms-gothic">地中埋設物について：</span>

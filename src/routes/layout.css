@@ -17,10 +17,14 @@
 		times, 'Times New Roman', serif;
 	--app-gothic-font: 'MS Gothic', 'ＭＳ ゴシック', 'MS PGothic', 'Yu Gothic', 'YuGothic',
 		'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif;
+	--app-print-font: 'MS Mincho', 'ＭＳ 明朝', 'MS 明朝', 'MS PMincho', 'HGS明朝E', 'Yu Mincho',
+		'YuMincho', 'Times New Roman', serif;
 }
 
 body {
 	font-family: var(--app-serif-font);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
 }
 
 @page {
@@ -37,6 +41,18 @@ body {
 	}
 	body {
 		margin: 0;
+		font-family: var(--app-print-font);
+		font-size: 10.5pt;
+	}
+
+	.font-ms-mincho,
+	.font-ms-gothic {
+		text-rendering: geometricPrecision;
+	}
+
+	.print-color-adjust {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
 	}
 }
 
