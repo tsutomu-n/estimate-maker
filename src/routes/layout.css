@@ -37,6 +37,18 @@ body {
 	margin: 0;
 }
 
+@page :first {
+	margin: 0;
+}
+
+@page :left,
+@page :right {
+	margin-top: 15mm;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 @media print {
 	html,
 	body {

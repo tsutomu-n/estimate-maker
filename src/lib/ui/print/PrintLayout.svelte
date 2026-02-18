@@ -22,7 +22,7 @@
       },
       typography: {
         bodyFontSize: "9pt",
-        bodyLineHeight: "1.3",
+        bodyLineHeight: "1.4",
         customerName: "16pt",
         headingMeta: "9pt",
         companyTitle: "11pt",
@@ -36,7 +36,8 @@
         docTitleTracking: "0.4em",
         headerCustomerBottom: "0.4rem",
         amountValue: "22pt",
-        amountLabel: "13pt"
+        amountLabel: "14pt",
+        grandTotalFontSize: "10.5pt"
       },
       spacing: {
         tablePadH: "3px",
@@ -54,6 +55,9 @@
         sectionGap: "0.3rem",
         sectionBodyGap: "0.2rem",
         sectionPaddingBottom: "1",
+        sectionHeadingPb: "2px",
+        sectionHeadingPl: "4px",
+        grandTotalPyOuter: "3mm",
         totalMarginBottom: "8",
         headerMb: "6mm",
         titlePb: "3mm",
@@ -65,14 +69,14 @@
         metaGridMt: "1mm",
         metaLabelW: "6rem",
         amountPx: "4mm",
-        amountMb: "5mm",
+        amountMb: "4mm",
         tableMb: "5mm",
         totalBlockMb: "8mm",
         totalRowPy: "1.5mm",
-        totalAmountW: "28mm",
+        totalAmountW: "35mm",
         totalAmountPr: "2mm",
         grandTotalPy: "2.5mm",
-        notesPad: "4mm",
+        notesPad: "6mm",
         notesListMl: "4mm",
         notesListGap: "1.5mm",
         subtotalCellPad: "1mm",
@@ -80,11 +84,11 @@
       },
       table: {
         cols: {
-          name: "30%",
+          name: "28%",
           qty: "8%",
-          unit: "8%",
-          unitPrice: "12%",
-          amount: "18%",
+          unit: "7%",
+          unitPrice: "13%",
+          amount: "20%",
           note: "24%"
         }
       }
@@ -115,6 +119,7 @@
     --a4-customer-bottom:${tokens.typography.headerCustomerBottom};
     --a4-font-amount:${tokens.typography.amountValue};
     --a4-font-amount-label:${tokens.typography.amountLabel};
+    --a4-font-grand-total:${tokens.typography.grandTotalFontSize};
     --a4-section-size:${tokens.typography.sectionTitle};
     --a4-pad-base:${tokens.spacing.tablePadBase};
     --a4-pad-h:${tokens.spacing.tablePadH};
@@ -124,6 +129,9 @@
     --a4-meta-gap:${tokens.spacing.metaGap};
     --a4-date-gap:${tokens.spacing.dateGap};
     --a4-header-meta-left:${tokens.spacing.headerMetaLeft};
+    --a4-section-heading-pb:${tokens.spacing.sectionHeadingPb};
+    --a4-section-heading-pl:${tokens.spacing.sectionHeadingPl};
+    --a4-grand-total-py-outer:${tokens.spacing.grandTotalPyOuter};
     --a4-section-gap:${tokens.spacing.sectionGap};
     --a4-section-body-gap:${tokens.spacing.sectionBodyGap};
     --a4-header-bottom:${tokens.spacing.headerBottom};
@@ -169,11 +177,11 @@
   const borderColor = "border-black";
   const subBorderColor = "border-black";
   const tableWrapper = "border border-black";
-  const cellBorder = "border-r border-b border-black last:border-r-0";
+  const cellBorder = "border-r border-b border-black";
   const headerStyle = "bg-transparent border-b border-black font-bold font-ms-gothic";
   const totalLabelClass = "font-ms-gothic font-bold opacity-90";
   const grandTotalLineLabelClass = "pl-2 font-ms-gothic";
-  const grandTotalStyle = "border border-black py-2";
+  const grandTotalStyle = "border-2 border-black";
 
   let rootStyle = $derived(`
     ${cssVars};
@@ -187,7 +195,7 @@
     line-height: var(--a4-lh-body);
   `);
   const themeClass = "is-classic-estimate";
-  const sectionHeadingClass = "pb-1 pl-2 font-bold border-b border-black";
+  const sectionHeadingClass = "font-bold border-b border-black";
   const detailsHoverClass = "";
   const tableTextClass = "";
   const subtotalAccentClass = "";
@@ -260,7 +268,7 @@
         {#if showSeal}
           <img
             src="/hanko.png"
-            class="absolute top-0 right-0 w-20 opacity-80 mix-blend-multiply z-10"
+            class="absolute bottom-0 right-0 w-16 opacity-80 mix-blend-multiply z-10"
             alt="社印"
           />
         {/if}
@@ -272,7 +280,7 @@
   <!-- ========================================== -->
   <!-- 御見積金額 (強調表示) -->
   <!-- ========================================== -->
-  <div class="{grandTotalStyle} flex items-center justify-between" style="margin-bottom: var(--a4-amount-mb); padding-left: var(--a4-amount-px); padding-right: var(--a4-amount-px);">
+  <div class="{grandTotalStyle} flex items-center justify-between" style="margin-bottom: var(--a4-amount-mb); padding: var(--a4-grand-total-py-outer) var(--a4-amount-px);">
     <span class="{totalLabelClass}" style="font-size: var(--a4-font-amount-label);">御見積金額 (税込)</span>
     <span class="font-bold {numFont} tracking-tight" style="font-size: var(--a4-font-amount);">
       ¥ {formatMoney(estimate.grandTotal)} -
@@ -307,7 +315,7 @@
           <!-- セクションヘッダー -->
           {#if section.items.length > 0}
             <tr class="break-inside-avoid">
-              <td colspan="6" class="{sectionHeadingClass}" style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-body-gap);">
+              <td colspan="6" class="{sectionHeadingClass}" style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-heading-pb); padding-left: var(--a4-section-heading-pl);">
                 <span class="font-ms-gothic" style="font-size: var(--a4-section-size);">{section.title}</span>
               </td>
             </tr>
@@ -327,7 +335,7 @@
               <!-- 単価 -->
               <td class="text-right align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{formatMoney(item.unitPrice)}</td>
               <!-- 金額 -->
-              <td class="text-right align-top font-bold {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
+              <td class="text-right align-top font-bold {numFont} border-r border-b border-black" style="padding: var(--a4-pad-v) var(--a4-pad-right-amount);font-size: var(--a4-font-table);">
                 {formatMoney(item.amount)}
               </td>
               <!-- 備考 -->
@@ -342,7 +350,7 @@
             <tr class="break-inside-avoid border-b-2 border-black border-t">
               <td colspan="3" class="border-r border-black"></td>
               <td class="text-center font-ms-gothic border-r border-black" style="padding: var(--a4-subtotal-cell-pad); font-size: var(--a4-font-note);">小計</td>
-              <td class="text-right font-bold {numFont} border-b border-black opacity-90" style="padding: var(--a4-subtotal-cell-pad); padding-right: var(--a4-subtotal-amount-pr);">{formatMoney(section.subTotal)}</td>
+              <td class="text-right font-bold {numFont} border-r border-b border-black opacity-90" style="padding: var(--a4-subtotal-cell-pad); padding-right: var(--a4-pad-right-amount);">{formatMoney(section.subTotal)}</td>
               <td class="border-b border-black"></td>
             </tr>
           {/if}
@@ -384,8 +392,8 @@
       
       <!-- 合計欄：二重線で強調 -->
       <div class="flex justify-between border-b-4 border-double {borderColor} font-bold {subtotalAccentClass}" style="padding-top: var(--a4-grand-total-py); padding-bottom: var(--a4-grand-total-py); padding-left: 0; padding-right: 0;">
-        <span class="{grandTotalLineLabelClass} border-r border-black flex-1">合計金額</span>
-        <span class="text-right {numFont}" style="width: var(--a4-total-amount-w); padding-right: var(--a4-total-amount-pr);">¥ {formatMoney(estimate.grandTotal)}</span>
+        <span class="{grandTotalLineLabelClass} border-r border-black flex-1" style="font-size: var(--a4-font-grand-total);">合計金額</span>
+        <span class="text-right {numFont}" style="width: var(--a4-total-amount-w); padding-right: var(--a4-total-amount-pr); font-size: var(--a4-font-grand-total);">¥ {formatMoney(estimate.grandTotal)}</span>
       </div>
     </div>
   </div>
