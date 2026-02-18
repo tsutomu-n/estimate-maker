@@ -231,7 +231,7 @@
   <!-- ========================================== -->
   <!-- 御見積金額 (強調表示) -->
   <!-- ========================================== -->
-  <div class="{grandTotalStyle} mb-8 flex items-center justify-center gap-6">
+  <div class="{grandTotalStyle} mb-6 flex items-center justify-between px-4">
     <span class="{totalLabelClass}" style="font-size: var(--a4-font-amount-label);">御見積金額 (税込)</span>
     <span class="font-bold {numFont} tracking-tight" style="font-size: var(--a4-font-amount);">
       ¥ {formatMoney(estimate.grandTotal)} -
