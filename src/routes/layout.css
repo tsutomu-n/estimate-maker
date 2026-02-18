@@ -2,23 +2,28 @@
 
 @font-face {
 	font-family: 'MS Mincho';
-	src: local('MS Mincho'), local('ＭＳ 明朝'), local('MS PMincho'), local('HGS明朝E'),
+	src:
+		local('MS Mincho'), local('ＭＳ 明朝'), local('MS PMincho'), local('HGS明朝E'),
 		local('Yu Mincho'), local('YuMincho'), local('Times New Roman');
 }
 
 @font-face {
 	font-family: 'MS Gothic';
-	src: local('MS Gothic'), local('ＭＳ ゴシック'), local('MS PGothic'), local('Yu Gothic'),
+	src:
+		local('MS Gothic'), local('ＭＳ ゴシック'), local('MS PGothic'), local('Yu Gothic'),
 		local('YuGothic'), local('Meiryo'), local('Hiragino Kaku Gothic ProN');
 }
 
 :root {
-	--app-serif-font: 'MS Mincho', 'ＭＳ 明朝', 'MS PMincho', 'HGS明朝E', 'Yu Mincho', 'YuMincho',
-		times, 'Times New Roman', serif;
-	--app-gothic-font: 'MS Gothic', 'ＭＳ ゴシック', 'MS PGothic', 'Yu Gothic', 'YuGothic',
-		'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif;
-	--app-print-font: 'MS Mincho', 'ＭＳ 明朝', 'MS 明朝', 'MS PMincho', 'HGS明朝E', 'Yu Mincho',
-		'YuMincho', 'Times New Roman', serif;
+	--app-serif-font:
+		'MS Mincho', 'ＭＳ 明朝', 'MS PMincho', 'HGS明朝E', 'Yu Mincho', 'YuMincho', times,
+		'Times New Roman', serif;
+	--app-gothic-font:
+		'MS Gothic', 'ＭＳ ゴシック', 'MS PGothic', 'Yu Gothic', 'YuGothic', 'Meiryo',
+		'Hiragino Kaku Gothic ProN', sans-serif;
+	--app-print-font:
+		'MS Mincho', 'ＭＳ 明朝', 'MS 明朝', 'MS PMincho', 'HGS明朝E', 'Yu Mincho', 'YuMincho',
+		'Times New Roman', serif;
 }
 
 body {
@@ -43,6 +48,10 @@ body {
 		margin: 0;
 		font-family: var(--app-print-font);
 		font-size: 10.5pt;
+	}
+
+	body > *:not(#svelte) {
+		display: none !important;
 	}
 
 	.font-ms-mincho,
