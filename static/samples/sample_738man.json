@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2026-02-18T12:00:00Z",
+  "customerName": "天野 茂",
+  "title": "木造農家住宅等 解体撤去工事",
+  "place": "群馬県甘楽郡下仁田町 地内",
+  "date": "2026年 1月 16日",
+  "discount": -40909,
+  "sections": [
+    {
+      "title": "1. 建物解体・撤去工",
+      "items": [
+        { "name": "①農家住宅解体（小運搬・積込共）", "quantity": 15.0, "unit": "坪", "unitPrice": 25000, "note": "手作業・狭所作業割増" },
+        { "name": "②農家住宅解体（基礎共）", "quantity": 7.5, "unit": "坪", "unitPrice": 22000, "note": "倉庫・物置等" },
+        { "name": "③専用住宅解体（基礎共）", "quantity": 27.0, "unit": "坪", "unitPrice": 27000, "note": "母屋・スケルトン解体" },
+        { "name": "植栽撤去（小木）", "quantity": 1.0, "unit": "式", "unitPrice": 45000, "note": "※指定項目" },
+        { "name": "分別積込費", "quantity": 40.0, "unit": "m3", "unitPrice": 2500, "note": "※指定項目" },
+        { "name": "石綿含有建材 除去工（レベル3）", "quantity": 1, "unit": "式", "unitPrice": 250000, "note": "屋根・軒天 手作業剥離" },
+        { "name": "残置物 分別・搬出作業費", "quantity": 49.5, "unit": "坪", "unitPrice": 18000, "note": "屋内一般ゴミ・産廃仕分" }
+      ]
+    },
+    {
+      "title": "2. 発生材処分費",
+      "items": [
+        { "name": "一般廃棄物 収集運搬・処分費", "quantity": 1, "unit": "式", "unitPrice": 1200000, "note": "※多量残置物 許可業者委託" },
+        { "name": "石膏ボード", "quantity": 15, "unit": "m3", "unitPrice": 28000, "note": "※指定単価" },
+        { "name": "コンクリートガラ（有筋・無筋）", "quantity": 30, "unit": "m3", "unitPrice": 5400, "note": "※指定単価" },
+        { "name": "タタミ・繊維くず", "quantity": 30, "unit": "枚", "unitPrice": 2700, "note": "※指定単価" },
+        { "name": "石綿含有産業廃棄物（レベル3）", "quantity": 6, "unit": "m3", "unitPrice": 35000, "note": "安定型処分場（飛散防止）" },
+        { "name": "木くず（解体材・造作材）", "quantity": 80, "unit": "m3", "unitPrice": 4500, "note": "群馬県内チップ工場" },
+        { "name": "廃プラ・ガラス陶磁器（混合）", "quantity": 30, "unit": "m3", "unitPrice": 22000, "note": "建設系混合廃棄物" },
+        { "name": "家電リサイクル・フロン回収費", "quantity": 1, "unit": "式", "unitPrice": 35000, "note": "法定フロン回収・破壊" }
+      ]
+    },
+    {
+      "title": "3. 運搬費",
+      "items": [
+        { "name": "場内小運搬・重機回送費", "quantity": 1, "unit": "式", "unitPrice": 150000, "note": "大型重機・回送車" },
+        { "name": "産廃・残置物 収集運搬費", "quantity": 1, "unit": "式", "unitPrice": 400000, "note": "処分場遠隔地対応" }
+      ]
+    },
+    {
+      "title": "4. 仮設・雑工・諸経費",
+      "items": [
+        { "name": "仮設工事（北・西側）", "quantity": 118.8, "unit": "m2", "unitPrice": 1300, "note": "※指定項目（足場等）" },
+        { "name": "石綿粉塵 飛散防止対策費", "quantity": 1, "unit": "式", "unitPrice": 120000, "note": "湿潤化・保護具・掲示板" },
+        { "name": "整地・場内片付け清掃", "quantity": 1, "unit": "式", "unitPrice": 80000, "note": "仕上げ転圧" },
+        { "name": "建設リサイクル法 届出代行費", "quantity": 1, "unit": "式", "unitPrice": 30000, "note": "※法定項目（追加）" },
+        { "name": "法定福利・届出管理費", "quantity": 1, "unit": "式", "unitPrice": 132560, "note": "端数調整含" }
+      ]
+    }
+  ]
+}

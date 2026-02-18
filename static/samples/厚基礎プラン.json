@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2026-02-18T14:05:00Z",
+  "customerName": "田村友秀様（小屋解体）工事",
+  "title": "木造倉庫 解体撤去工事",
+  "place": "南牧村小沢1560",
+  "date": "2026年 2月 18日",
+  "discount": 0,
+  "sections": [
+    {
+      "title": "1. 建物解体・撤去工",
+      "items": [
+        { "name": "木造倉庫 解体撤去費", "quantity": 5.2, "unit": "坪", "unitPrice": 20000, "note": "屋根トタン・内装材共" },
+        { "name": "基礎コンクリート撤去費", "quantity": 1, "unit": "式", "unitPrice": 85000, "note": "※厚さ38cm・油圧ブレーカー使用" }
+      ]
+    },
+    {
+      "title": "2. 発生材運搬・処分費",
+      "items": [
+        { "name": "産業廃棄物 運搬処分費", "quantity": 1, "unit": "式", "unitPrice": 55000, "note": "木くず・廃プラ（残置物含）" },
+        { "name": "コンクリートガラ処分費", "quantity": 5.1, "unit": "m3", "unitPrice": 8000, "note": "※総重量 約7.3t（ダンプ2車）" },
+        { "name": "一般廃棄物 収集運搬費", "quantity": 0, "unit": "式", "unitPrice": 0, "note": "※お客様ご自身での処分" }
+      ]
+    },
+    {
+      "title": "3. 諸経費・他",
+      "items": [
+        { "name": "重機回送・車両損料", "quantity": 1, "unit": "式", "unitPrice": 13200, "note": "ブレーカーアタッチメント含" }
+      ]
+    }
+  ]
+}

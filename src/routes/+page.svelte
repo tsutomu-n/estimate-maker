@@ -1,0 +1,49 @@
+<script lang="ts">
+  import { Estimate } from '$lib/core/models/Estimate.svelte';
+  import EstimateEditor from '$lib/ui/editor/EstimateEditor.svelte';
+  import PrintLayout from '$lib/ui/print/PrintLayout.svelte';
+
+  const estimate = new Estimate();
+  
+  // ★追加: 役所モードの状態管理
+  let isClassicMode = $state(false);
+</script>
+
+<div class="flex flex-row min-h-screen bg-gray-800">
+  
+  <!-- 左パネル (Editor) -->
+  <div class="w-1/2 h-screen overflow-y-auto border-r border-gray-600 print:hidden">
+    <EstimateEditor {estimate} />
+  </div>
+
+  <!-- 右パネル (Preview) -->
+  <div class="w-1/2 h-screen overflow-y-auto bg-gray-500 p-8 flex flex-col items-center print:w-full print:h-auto print:bg-white print:p-0 print:block">
+    
+    <!-- ★追加: スタイル切り替えスイッチ -->
+  <div class="mb-4 bg-white px-4 py-2 rounded-full shadow flex items-center gap-3 print:hidden">
+    <span class="text-xs font-bold font-ms-gothic text-gray-500">スタイル:</span>
+    <label class="flex items-center cursor-pointer gap-2 select-none">
+      <input type="checkbox" bind:checked={isClassicMode} class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+        <span class="text-sm font-medium font-ms-gothic {isClassicMode ? 'text-black' : 'text-slate-600'}">
+          {isClassicMode ? '役所提出用 (クラシック)' : '標準デザイン (モダン)'}
+        </span>
+      </label>
+  </div>
+
+    <!-- プレビュー本体 -->
+    <div class="scale-[0.8] origin-top print:scale-100">
+      <!-- ★追加: isClassic プロパティを渡す -->
+      <PrintLayout {estimate} isClassic={isClassicMode} />
+    </div>
+
+  </div>
+</div>
+
+<!-- 印刷ボタン -->
+  <button
+  class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-500 text-white font-bold font-ms-gothic py-4 px-8 rounded-full shadow-2xl flex items-center gap-2 print:hidden z-50 transition-transform hover:scale-105"
+  onclick={() => window.print()}
+>
+  <span class="text-2xl">🖨</span>
+  <span>見積書を発行</span>
+</button>
