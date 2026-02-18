@@ -21,7 +21,7 @@
 
   // 2. 数値用フォント (ここが重要)
   // 数値は体裁を揃えるため明朝体ベースで等幅寄せ
-let numFont = $derived(isClassic 
+  let numFont = $derived(isClassic
     ? "font-ms-mincho tabular-nums tracking-tight" 
     : "font-ms-mincho tracking-normal"
   );
