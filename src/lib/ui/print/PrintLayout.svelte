@@ -82,6 +82,10 @@
     ? ""
     : "bg-slate-50 print:bg-transparent"
   );
+  let docTitleClass = $derived(isClassic
+    ? "text-3xl font-bold mb-6 tracking-[0.22em] font-ms-gothic text-center"
+    : "text-3xl font-bold mb-4 tracking-[0.3em] font-ms-gothic"
+  );
 
 </script>
 
@@ -101,6 +105,9 @@
   <!-- ========================================== -->
   <!-- ヘッダーエリア -->
   <!-- ========================================== -->
+  {#if isClassic}
+    <h2 class="{docTitleClass}">御見積書</h2>
+  {/if}
   <header class="flex justify-between items-start mb-10 pb-2 border-b-2 {borderColor}">
     <!-- 宛名・工事情報 -->
     <div class="w-7/12 pt-2">
@@ -122,8 +129,10 @@
 
     <!-- 自社情報 (常に明朝体・右寄せ) -->
     <div class="w-5/12 text-right relative">
-      <h2 class="text-3xl font-bold mb-4 tracking-[0.3em] font-ms-gothic">御見積書</h2>
-      
+      {#if !isClassic}
+        <h2 class="{docTitleClass}">御見積書</h2>
+      {/if}
+
       <div class="text-xs space-y-1.5">
         <p class="font-bold text-lg tracking-wide font-ms-gothic">西毛建設株式会社</p>
         <p class="text-sm">代表取締役　橳島 努</p>
