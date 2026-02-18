@@ -8,6 +8,81 @@
   // 電子印鑑の表示状態 (デフォルトOFF)
   let showSeal = $state(false);
 
+  // デザイン定義（A4印刷固定値）
+  const A4_PRINT_TOKENS = {
+    classic: {
+      paper: {
+        width: "210mm",
+        minHeight: "297mm",
+        pagePadding: "12mm",
+        pagePrintPadding: "12mm",
+        headerColumns: "minmax(0,1fr)_minmax(0,290px)",
+        headerGap: "10mm",
+        totalWidth: "55%"
+      },
+      typography: {
+        bodyFontSize: "10.5pt",
+        bodyLineHeight: "1.35",
+        headingMeta: "9.5pt",
+        companyTitle: "11pt",
+        permitText: "10px",
+        sectionTitle: "10.5pt",
+        docTitle: "30pt",
+        docTitleTracking: "0.22em",
+        amountValue: "3xl"
+      },
+      spacing: {
+        tablePadH: "1.5",
+        tablePadV: "2",
+        headerGapY: "6",
+        headerBottom: "10",
+        footerGap: "10",
+        metaGap: "1.5"
+      }
+    },
+    modern: {
+      paper: {
+        width: "210mm",
+        minHeight: "297mm",
+        pagePadding: "15mm",
+        pagePrintPadding: "15mm",
+        headerColumns: "minmax(0,1fr)_minmax(0,290px)",
+        headerGap: "10mm",
+        totalWidth: "55%"
+      },
+      typography: {
+        bodyFontSize: "10.5pt",
+        bodyLineHeight: "1.45",
+        headingMeta: "9.5pt",
+        companyTitle: "11pt",
+        permitText: "10px",
+        sectionTitle: "10.5pt",
+        docTitle: "32pt",
+        docTitleTracking: "0.3em",
+        amountValue: "3xl"
+      },
+      spacing: {
+        tablePadH: "1.5",
+        tablePadV: "2",
+        headerGapY: "6",
+        headerBottom: "10",
+        footerGap: "10",
+        metaGap: "1.5"
+      }
+    }
+  } as const;
+
+  let tokens = $derived(isClassic ? A4_PRINT_TOKENS.classic : A4_PRINT_TOKENS.modern);
+  let cssVars = $derived(`
+    --a4-paper-width:${tokens.paper.width};
+    --a4-paper-height:${tokens.paper.minHeight};
+    --a4-paper-pad:${tokens.paper.pagePadding};
+    --a4-paper-print-pad:${tokens.paper.pagePrintPadding};
+    --a4-header-columns:${tokens.paper.headerColumns};
+    --a4-header-gap:${tokens.paper.headerGap};
+    --a4-total-width:${tokens.paper.totalWidth};
+  `);
+
   // =================================================================
   // スタイル定義 (モダン vs クラシック 切り替えロジック)
   // =================================================================
@@ -15,8 +90,8 @@
   // 1. ベースフォントと文字色
   // 役所向けはMS明朝ベースで統一（標準/クラシック差分は色や罫線の扱い）
   let baseStyle = $derived(isClassic 
-    ? "font-ms-mincho text-black text-[10.5pt] leading-relaxed tracking-[0.01em]" 
-    : "font-ms-mincho text-slate-900"
+    ? "font-ms-mincho text-black text-[10.5pt] leading-[1.35] tracking-[0.01em]" 
+    : "font-ms-mincho text-slate-900 text-[10.5pt] leading-[1.45]"
   );
 
   // 2. 数値用フォント (ここが重要)
@@ -65,6 +140,7 @@
 
   // 用紙内余白
   let sheetPadding = $derived(isClassic ? "p-[12mm]" : "p-[15mm]");
+  let sheetPrintPadding = $derived(isClassic ? "print:p-[12mm]" : "print:p-[15mm]");
   let themeClass = $derived(isClassic
     ? "is-classic-estimate"
     : "is-modern-estimate"
@@ -77,20 +153,20 @@
     ? ""
     : "hover:bg-slate-50 print:hover:bg-transparent"
   );
-  let tableTextClass = $derived(isClassic ? "text-sm" : "text-sm");
+  let tableTextClass = $derived(isClassic ? "text-[10.5pt]" : "text-sm");
   let subtotalAccentClass = $derived(isClassic
     ? ""
     : "bg-slate-50 print:bg-transparent"
   );
   let docTitleClass = $derived(isClassic
-    ? "text-3xl font-bold mb-6 tracking-[0.22em] font-ms-gothic text-center"
-    : "text-3xl font-bold mb-4 tracking-[0.3em] font-ms-gothic"
+    ? "text-[30pt] font-bold mb-4 tracking-[0.22em] font-ms-gothic leading-none text-right"
+    : "text-[32pt] font-bold mb-4 tracking-[0.3em] font-ms-gothic leading-none text-right"
   );
 
 </script>
 
 <!-- A4用紙設定 -->
-<div class="w-[min(100%,210mm)] min-h-[297mm] mx-auto bg-white {sheetPadding} shadow-lg print:shadow-none print:w-[210mm] print:min-h-[297mm] print:p-0 print:m-0 relative group {baseStyle} {themeClass}">
+<div class="w-[210mm] mx-auto bg-white {sheetPadding} {sheetPrintPadding} shadow-lg print:shadow-none print:w-[210mm] print:h-auto print:min-h-0 print:max-h-[297mm] print:overflow-visible print:box-border print:m-0 relative group {baseStyle} {themeClass}" style={cssVars}>
   
   <!-- ▼ 印刷プレビュー操作ボタン (画面上のみ表示) -->
     <div class="absolute top-2 right-2 flex gap-2 print:hidden opacity-0 group-hover:opacity-100 transition-opacity z-50">
@@ -105,17 +181,14 @@
   <!-- ========================================== -->
   <!-- ヘッダーエリア -->
   <!-- ========================================== -->
-  {#if isClassic}
-    <h2 class="{docTitleClass}">御見積書</h2>
-  {/if}
-  <header class="flex justify-between items-start mb-10 pb-2 border-b-2 {borderColor}">
+  <header class="grid items-start mb-10 pb-2 border-b-2 {borderColor}" style="grid-template-columns: var(--a4-header-columns); column-gap: var(--a4-header-gap);">
     <!-- 宛名・工事情報 -->
-    <div class="w-7/12 pt-2">
+    <div class="min-w-0 pt-2">
       <p class="text-xs mb-1 ml-1">{estimate.date}</p>
       <h1 class="text-2xl font-bold font-ms-gothic border-b {subBorderColor} inline-block mb-6 pb-1 pr-8">
         {estimate.customerName} <span class="text-base font-normal">様</span>
       </h1>
-      <div class="space-y-1 text-sm pl-1">
+      <div class="space-y-1 text-[11px] pl-1">
         <div class="flex items-start">
           <span class="w-24 shrink-0 opacity-70">工事名称：</span>
           <span class="font-medium">{estimate.title}</span>
@@ -128,14 +201,12 @@
     </div>
 
     <!-- 自社情報 (常に明朝体・右寄せ) -->
-    <div class="w-5/12 text-right relative">
-      {#if !isClassic}
-        <h2 class="{docTitleClass}">御見積書</h2>
-      {/if}
+    <div class="min-w-0 text-right relative">
+        <h2 class="{docTitleClass} print:mb-3 print:tracking-[0.28em]">御見積書</h2>
 
-      <div class="text-xs space-y-1.5">
-        <p class="font-bold text-lg tracking-wide font-ms-gothic">西毛建設株式会社</p>
-        <p class="text-sm">代表取締役　橳島 努</p>
+      <div class="text-[10pt] space-y-1.5 leading-tight">
+        <p class="font-bold text-[11pt] tracking-wide font-ms-gothic">西毛建設株式会社</p>
+        <p>代表取締役　橳島　努</p>
         <p class="mt-1">〒370-2601</p>
         <!-- 住所は折り返してでも全て表示 -->
         <p class="whitespace-normal break-words leading-tight">
@@ -178,11 +249,11 @@
     <table class="w-full min-w-full border-collapse table-fixed {tableTextClass} {tableWrapper}">
       <thead>
         <tr class="{headerStyle} print:bg-transparent">
-          <th class="p-2 text-left w-[45%] pl-4 font-ms-gothic {isClassic ? 'border-r border-black' : ''}">工事名 / 摘要</th>
-          <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">数量</th>
-          <th class="p-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単位</th>
-          <th class="p-2 text-right w-[15%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単価</th>
-          <th class="p-2 text-right w-[20%] pr-4 font-ms-gothic">金額</th>
+          <th class="px-1.5 py-2 text-left w-[40%] pl-2.5 font-ms-gothic {isClassic ? 'border-r border-black' : ''}">工事名 / 摘要</th>
+          <th class="px-1.5 py-2 text-center w-[12%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">数量</th>
+          <th class="px-1.5 py-2 text-center w-[10%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単位</th>
+          <th class="px-1.5 py-2 text-right w-[14%] font-ms-gothic {isClassic ? 'border-r border-black' : ''}">単価</th>
+          <th class="px-1.5 py-2 text-right w-[24%] pr-2.5 font-ms-gothic">金額</th>
         </tr>
       </thead>
       <tbody>
@@ -200,20 +271,20 @@
           {#each section.items as item}
             <tr class="break-inside-avoid {detailsHoverClass}">
               <!-- 工事名 -->
-              <td class="p-2 pl-6 align-top {cellBorder}">
+              <td class="px-1.5 py-2 pl-5 align-top {cellBorder}">
                 <span class="block">{item.name}</span>
                 {#if item.note}
                   <span class="block text-[10px] mt-0.5 opacity-70 scale-95 origin-top-left">{item.note}</span>
                 {/if}
               </td>
               <!-- 数量 -->
-              <td class="p-2 text-center align-top {numFont} {cellBorder}">{item.quantity}</td>
+              <td class="px-1.5 py-2 text-center align-top {numFont} {cellBorder}">{item.quantity}</td>
               <!-- 単位 -->
-              <td class="p-2 text-center text-xs align-top {cellBorder}">{item.unit}</td>
+              <td class="px-1.5 py-2 text-center align-top {numFont} text-xs {cellBorder}">{item.unit}</td>
               <!-- 単価 -->
-              <td class="p-2 text-right align-top {numFont} {cellBorder}">{formatMoney(item.unitPrice)}</td>
+              <td class="px-1.5 py-2 text-right align-top {numFont} {cellBorder}">{formatMoney(item.unitPrice)}</td>
               <!-- 金額 -->
-              <td class="p-2 text-right pr-4 align-top font-bold {numFont} {isClassic ? 'border-b border-black' : 'border-b border-slate-200'}">
+              <td class="px-1.5 py-2 text-right pr-2.5 align-top font-bold {numFont} {isClassic ? 'border-b border-black' : 'border-b border-slate-200'}">
                   {formatMoney(item.amount)}
               </td>
             </tr>
@@ -238,7 +309,7 @@
   <!-- ========================================== -->
   <div class="flex justify-end break-inside-avoid mb-10">
     <!-- 役所風の場合、合計欄にも枠線を付ける -->
-    <div class="w-[55%] text-sm {isClassic ? 'border border-black' : ''}">
+    <div class="text-sm {isClassic ? 'border border-black' : ''}" style="width: var(--a4-total-width);">
       
       <!-- 税抜小計 -->
       <div class="flex justify-between border-b {subBorderColor} py-1.5">

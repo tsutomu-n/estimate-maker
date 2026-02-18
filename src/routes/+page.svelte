@@ -17,7 +17,7 @@
   </div>
 
   <!-- 右パネル (Preview) -->
-  <div class="w-1/2 min-w-0 h-screen overflow-y-auto overflow-x-auto bg-gray-500 p-8 flex flex-col items-center print:w-full print:h-auto print:bg-white print:p-0 print:block">
+  <div class="w-1/2 min-w-0 h-screen overflow-y-auto overflow-x-auto bg-gray-500 p-8 flex flex-col items-center print:w-full print:min-h-0 print:h-auto print:bg-white print:p-0 print:block print:items-stretch print:justify-start">
     
     <!-- ★追加: スタイル切り替えスイッチ -->
   <div class="mb-4 bg-white px-4 py-2 rounded-full shadow flex items-center gap-3 print:hidden">

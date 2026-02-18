@@ -23,6 +23,23 @@ body {
 	font-family: var(--app-serif-font);
 }
 
+@page {
+	size: A4 portrait;
+	margin: 0;
+}
+
+@media print {
+	html,
+	body {
+		width: 210mm;
+		height: 297mm;
+		background: #ffffff;
+	}
+	body {
+		margin: 0;
+	}
+}
+
 .font-ms-mincho {
 	font-family: var(--app-serif-font);
 }
