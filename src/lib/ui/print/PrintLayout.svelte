@@ -257,7 +257,7 @@
           {#if section.items.length > 0}
             <tr class="break-inside-avoid">
               <td colspan="5" class="{sectionHeadingClass}" style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-body-gap);">
-                <span class="font-ms-gothic" style="font-size: var(--a4-font-section);">{section.title}</span>
+                <span class="font-ms-gothic" style="font-size: var(--a4-section-size);">{section.title}</span>
               </td>
             </tr>
           {/if}
