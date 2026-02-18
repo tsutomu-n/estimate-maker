@@ -15,14 +15,14 @@
   // 1. ベースフォントと文字色
   // 役所向けはMS明朝ベースで統一（標準/クラシック差分は色や罫線の扱い）
   let baseStyle = $derived(isClassic 
-    ? "font-ms-mincho text-black" 
+    ? "font-ms-mincho text-black text-[10.5pt] leading-relaxed tracking-[0.01em]" 
     : "font-ms-mincho text-slate-900"
   );
 
   // 2. 数値用フォント (ここが重要)
   // 数値は体裁を揃えるため明朝体ベースで等幅寄せ
-  let numFont = $derived(isClassic
-    ? "font-ms-mincho tabular-nums tracking-tight" 
+  let numFont = $derived(isClassic 
+    ? "font-ms-mincho tabular-nums tracking-normal" 
     : "font-ms-mincho tracking-normal"
   );
 
@@ -47,16 +47,46 @@
     : "bg-slate-100 border-y border-slate-800 text-xs font-ms-gothic"
   );
 
+  let totalLabelClass = $derived(isClassic
+    ? "text-lg font-ms-gothic font-bold mr-8 opacity-90"
+    : "text-lg font-ms-gothic font-bold mr-8 tracking-widest opacity-90"
+  );
+
+  let grandTotalLineLabelClass = $derived(isClassic
+    ? "pl-2 font-ms-gothic"
+    : "pl-2 font-ms-gothic tracking-widest"
+  );
+
   // 7. 御見積金額のデザイン
   let grandTotalStyle = $derived(isClassic
-    ? "border-2 border-black py-2 underline decoration-black decoration-1 underline-offset-4"
+    ? "border border-black py-2"
     : "border-t-[3px] border-b-[1px] border-slate-800 py-4 bg-slate-50 underline decoration-1 underline-offset-8"
+  );
+
+  // 用紙内余白
+  let sheetPadding = $derived(isClassic ? "p-[12mm]" : "p-[15mm]");
+  let themeClass = $derived(isClassic
+    ? "is-classic-estimate"
+    : "is-modern-estimate"
+  );
+  let sectionHeadingClass = $derived(isClassic
+    ? "pt-4 pb-1 pl-2 font-bold border-b border-black"
+    : "pt-4 pb-1 pl-2 bg-gray-100 border-b border-slate-200 print:bg-transparent"
+  );
+  let detailsHoverClass = $derived(isClassic
+    ? ""
+    : "hover:bg-slate-50 print:hover:bg-transparent"
+  );
+  let tableTextClass = $derived(isClassic ? "text-sm" : "text-sm");
+  let subtotalAccentClass = $derived(isClassic
+    ? ""
+    : "bg-slate-50 print:bg-transparent"
   );
 
 </script>
 
 <!-- A4用紙設定 -->
-<div class="w-[210mm] min-h-[297mm] mx-auto bg-white p-[15mm] text-[11pt] leading-relaxed shadow-lg print:shadow-none print:w-full print:h-full print:p-0 print:m-0 relative group {baseStyle}">
+<div class="w-[min(100%,210mm)] min-h-[297mm] mx-auto bg-white {sheetPadding} shadow-lg print:shadow-none print:w-[210mm] print:min-h-[297mm] print:p-0 print:m-0 relative group {baseStyle} {themeClass}">
   
   <!-- ▼ 印刷プレビュー操作ボタン (画面上のみ表示) -->
     <div class="absolute top-2 right-2 flex gap-2 print:hidden opacity-0 group-hover:opacity-100 transition-opacity z-50">
@@ -126,7 +156,7 @@
   <!-- 御見積金額 (強調表示) -->
   <!-- ========================================== -->
   <div class="{grandTotalStyle} mb-8 text-center print:bg-transparent">
-      <span class="text-lg font-ms-gothic font-bold mr-8 tracking-widest opacity-90">御見積金額 (税込)</span>
+      <span class="{totalLabelClass}">御見積金額 (税込)</span>
     <span class="text-3xl font-bold {numFont} tracking-tight underline decoration-1 underline-offset-8">
       ¥ {formatMoney(estimate.grandTotal)} -
     </span>
@@ -136,7 +166,7 @@
   <!-- 明細テーブル -->
   <!-- ========================================== -->
   <div class="w-full overflow-x-auto print:overflow-visible mb-6">
-    <table class="w-full min-w-[700px] border-collapse text-sm {tableWrapper}">
+    <table class="w-full min-w-full border-collapse table-fixed {tableTextClass} {tableWrapper}">
       <thead>
         <tr class="{headerStyle} print:bg-transparent">
           <th class="p-2 text-left w-[45%] pl-4 font-ms-gothic {isClassic ? 'border-r border-black' : ''}">工事名 / 摘要</th>
@@ -151,7 +181,7 @@
           <!-- セクションヘッダー -->
           {#if section.items.length > 0}
             <tr class="break-inside-avoid">
-              <td colspan="5" class="pt-4 pb-1 pl-2 font-bold border-b {borderColor} {isClassic ? 'bg-gray-100 print:bg-transparent' : ''}">
+              <td colspan="5" class="{sectionHeadingClass}">
                 <span class="font-ms-gothic">{section.title}</span>
               </td>
             </tr>
@@ -159,7 +189,7 @@
           
           <!-- 明細行 -->
           {#each section.items as item}
-            <tr class="break-inside-avoid hover:bg-slate-50 print:hover:bg-transparent">
+            <tr class="break-inside-avoid {detailsHoverClass}">
               <!-- 工事名 -->
               <td class="p-2 pl-6 align-top {cellBorder}">
                 <span class="block">{item.name}</span>
@@ -226,8 +256,8 @@
       </div>
       
       <!-- 合計欄：二重線で強調 -->
-      <div class="flex justify-between border-b-4 border-double {borderColor} py-3 font-bold text-lg bg-slate-50 print:bg-transparent mt-1">
-        <span class="pl-2 font-ms-gothic tracking-widest {isClassic ? 'border-r border-black flex-1' : ''}">合計金額</span>
+      <div class="flex justify-between border-b-4 border-double {borderColor} py-3 font-bold text-lg {subtotalAccentClass} mt-1">
+        <span class="{grandTotalLineLabelClass} {isClassic ? 'border-r border-black flex-1' : ''}">合計金額</span>
         <span class="pr-2 w-32 text-right {numFont}">¥ {formatMoney(estimate.grandTotal)}</span>
       </div>
     </div>
