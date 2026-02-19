@@ -122,3 +122,37 @@ export interface LineItemSchema {
   - `createdAt`: ISO8601 (`date-time`)
   - `date`: `YYYY年M月D日`
   - `sections` / `items` の追加項目は禁止（`additionalProperties: false`）
+
+## 読み込み時の互換ルール（実装済み）
+
+見積の読み込みは、`src/lib/core/models` の `fromJSON` で次を受け付けます。
+
+- `discount` が未設定の場合、`discountExclTax` を代替として使用する。
+- 各明細は次の優先順位で単価を解決する。
+  - `unitPrice`
+  - `unitPriceExclTax`
+  - `amountExclTax` を `quantity` で割って算出
+- `totals`, `price`, `assumptions`, `scenarioId`, `scenarioTitle` は、現行の画面計算には直接使用されない。  
+  既存値がある場合は表示されないが、読み込み自体は許容される。
+
+## スキーマの使い分け
+
+- 厳密な旧仕様（`unitPrice` / `discount` のみ）: `docs/estimate-json.schema.json`
+- 互換入力を許容する場合（`unitPriceExclTax`, `amountExclTax`, `discountExclTax` など）: `docs/estimate-json.compat.schema.json`
+
+## 検証コマンド例（`ajv`）
+
+例: `ajv` でどちらかのスキーマに対して JSON を検証する。
+
+```bash
+# 依存がある場合はインストール
+npm i -D ajv-cli
+
+# 厳密版
+npx ajv validate -s docs/estimate-json.schema.json -d static/samples/標準プラン.json
+
+# 互換版
+npx ajv validate -s docs/estimate-json.compat.schema.json -d static/samples/標準プラン.json
+```
+
+互換版は新しいフィールドを含む JSON でも検証に通る前提、厳密版は最小構造に限定されます。

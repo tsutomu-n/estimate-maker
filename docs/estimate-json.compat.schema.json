@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/estimate-json.compat.schema.json",
+  "title": "EstimateJSON (compat)",
+  "type": "object",
+  "required": [
+    "version",
+    "createdAt",
+    "customerName",
+    "title",
+    "place",
+    "date",
+    "sections"
+  ],
+  "oneOf": [
+    { "required": ["discount"] },
+    { "required": ["discountExclTax"] }
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "customerName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "place": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}年\\d{1,2}月\\d{1,2}日$"
+    },
+    "discount": {
+      "type": "number"
+    },
+    "discountExclTax": {
+      "type": "number"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["title", "items"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "items": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+              "type": "object",
+              "required": ["name", "quantity", "unit", "note"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unitPrice": {
+                  "type": "number"
+                },
+                "unitPriceExclTax": {
+                  "type": "number"
+                },
+                "amountExclTax": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "oneOf": [
+                { "required": ["unitPrice"] },
+                { "required": ["unitPriceExclTax"] },
+                { "required": ["amountExclTax"] }
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "scenarioId": {
+      "type": "string"
+    },
+    "scenarioTitle": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "object",
+      "required": ["tax", "generalWaste", "industrialWaste", "foundation"],
+      "properties": {
+        "tax": {
+          "type": "object",
+          "required": ["taxRate", "rounding"],
+          "properties": {
+            "taxRate": { "type": "number" },
+            "rounding": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "generalWaste": {
+          "type": "object",
+          "required": ["policy", "ifCustomerCannotDispose"],
+          "properties": {
+            "policy": { "type": "string" },
+            "ifCustomerCannotDispose": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "industrialWaste": {
+          "type": "object",
+          "required": ["policy"],
+          "properties": {
+            "policy": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "foundation": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "totals": {
+      "type": "object",
+      "properties": {
+        "subTotalExclTax": { "type": "number" },
+        "totalExclTax": { "type": "number" },
+        "taxAmount": { "type": "number" },
+        "totalInclTax": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "price": {
+      "type": "object",
+      "properties": {
+        "currency": { "type": "string" },
+        "exclTax": { "type": "number" },
+        "taxRate": { "type": "number" },
+        "tax": { "type": "number" },
+        "inclTax": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
