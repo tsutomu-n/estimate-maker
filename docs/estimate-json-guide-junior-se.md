@@ -110,18 +110,13 @@ npx -y ajv-cli validate -s docs/estimate-json.compat.schema.json -d static/sampl
 `static/samples` の現状チェック:
 
 - `厚基礎プラン.json`: `strict` で `OK`
-- `標準プラン.json`: `NG`（strict NG）
-  - 原因:
-    - `unitPrice` ではなく `unitPriceExclTax` / `amountExclTax` を使用している
-    - `discount` ではなく `discountExclTax` を使用している
-    - `assumptions`/`totals`/`price`/`scenario...` が含まれている
-- `sample_738man.json`: `NG`（strict NG）
-  - 内容が「別スキーマ定義(JSON Schemaファイル)」そのものになっているため、見積データとして扱えない
+- `標準プラン.json`: `OK`（strict 対応）
+- `sample_738man.json`: `OK`（strict 対応）
 
-改善時は `標準プラン.json` を strict へ戻す場合に次を順に直す:
+改善時は次を確認する:
 1. `unitPrice` のみ採用
-2. `discount` を追加
-3. 互換追加項目（`scenario*`, `assumptions`, `totals`, `price`）は除外
+2. `discount` を持たせる
+3. 互換追加項目は必要時のみ許容（`compat` と明確分離）
 
 ## 参照先
 
