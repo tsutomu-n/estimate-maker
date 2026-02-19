@@ -55,13 +55,34 @@
   // ハンドラ: JSON保存
   // ---------------------------------------------------------
   function handleDownloadJSON() {
-    const data = JSON.stringify(estimate.toJSON(), null, 2);
+    const data = JSON.stringify({
+      version: '1.0.0',
+      createdAt: new Date().toISOString(),
+      customerName: estimate.customerName,
+      title: estimate.title,
+      place: estimate.place,
+      date: estimate.date,
+      terms: estimate.terms,
+      discount: estimate.discount,
+      sections: estimate.sections.map((section) => ({
+        title: section.title,
+        items: section.items.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          unit: item.unit,
+          unitPrice: item.unitPrice,
+          note: item.note
+        }))
+      }))
+    }, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    // ファイル名: 顧客名_日付.json (スペースはアンダースコアに置換)
-    const filename = `${estimate.customerName.replace(/\s+/g, '_')}_見積データ.json`;
+    // ファイル名: 顧客名_yyyymmdd.json
+    const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const safeName = (estimate.customerName || 'estimate').replace(/[\\/:*?"<>|]/g, '_').replace(/\s+/g, '_');
+    const filename = `${safeName}_見積データ_${ymd}.json`;
     a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
