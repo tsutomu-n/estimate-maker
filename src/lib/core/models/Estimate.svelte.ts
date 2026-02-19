@@ -1,6 +1,6 @@
 import { Section } from './Section.svelte';
 import { calculateTax } from '../utils/money';
-import type { TermSectionSchema } from '$lib/types/schema';
+import type { EstimateSchema, TermSectionSchema } from '$lib/types/schema';
 
 export class Estimate {
   customerName = $state('');
@@ -54,7 +54,7 @@ export class Estimate {
   }
 
   // ★追加: データを丸ごと入れ替えるメソッド
-  loadFromJSON(json: Record<string, unknown>) {
+  loadFromJSON(json: EstimateSchema | Record<string, unknown>) {
     try {
       // バリデーション（簡易）
       if (!json || typeof json !== 'object') throw new Error('Invalid JSON');
@@ -65,7 +65,8 @@ export class Estimate {
       this.date = String(json.date ?? '');
 
       const directDiscount = Number(json.discount);
-      this.discount = Number.isFinite(directDiscount) ? directDiscount : Number(json.discountExclTax) || 0;
+      const fallbackDiscount = Number((json as Record<string, unknown>).discountExclTax);
+      this.discount = Number.isFinite(directDiscount) ? directDiscount : Number.isFinite(fallbackDiscount) ? fallbackDiscount : 0;
 
       // セクションと明細行を再構築（ここが重要）
       if (Array.isArray(json.sections)) {

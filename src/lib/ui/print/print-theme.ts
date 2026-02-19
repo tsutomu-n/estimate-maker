@@ -19,7 +19,7 @@ export const PRINT_TOKENS = {
       permitTopSpacing: '0.3rem',
       noteText: '10pt',
       tableText: '11pt',
-      sectionTitle: '9.5pt',
+      sectionTitle: '10.5pt',
       docTitle: '22pt',
       notesTitle: '10pt',
       docTitleTracking: '0.4em',
