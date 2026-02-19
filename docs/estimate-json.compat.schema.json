@@ -47,6 +47,9 @@
     "discountExclTax": {
       "type": "number"
     },
+    "taxRate": {
+      "type": "number"
+    },
     "sections": {
       "type": "array",
       "minItems": 0,
@@ -89,7 +92,7 @@
                   "type": "string"
                 }
               },
-              "oneOf": [
+              "anyOf": [
                 { "required": ["unitPrice"] },
                 { "required": ["unitPriceExclTax"] },
                 { "required": ["amountExclTax"] }
