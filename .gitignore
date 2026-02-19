@@ -28,4 +28,3 @@ vite.config.ts.timestamp-*
 
 .memo
 .ai_memory
-static/samples

@@ -78,10 +78,10 @@ export const PRINT_TOKENS = {
       cols: {
         name: '32%',
         qty: '9%',
-        unit: '8%',
-        unitPrice: '10%',
+        unit: '10%',
+        unitPrice: '12%',
         amount: '15%',
-        note: '26%'
+        note: '22%'
       }
     }
   }
