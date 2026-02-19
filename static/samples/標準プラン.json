@@ -41,7 +41,22 @@
       ]
     }
   ],
-  "discount": -2600,
+  "discount": -2236,
+  "taxRate": 0.1,
+  "discountExclTax": -2236,
+  "totals": {
+    "subTotalExclTax": 168600,
+    "totalExclTax": 166364,
+    "taxAmount": 16636,
+    "totalInclTax": 183000
+  },
+  "price": {
+    "currency": "JPY",
+    "exclTax": 166364,
+    "taxRate": 0.1,
+    "tax": 16636,
+    "inclTax": 183000
+  },
   "sections": [
     {
       "title": "1. 建物解体・撤去工",
@@ -69,7 +84,7 @@
           "name": "産業廃棄物 運搬処分費",
           "quantity": 1,
           "unit": "式",
-          "unitPrice": 45000,
+          "unitPrice": 47000,
           "note": "木くず・硬質プラ・金属"
         },
         {
@@ -88,14 +103,14 @@
           "name": "重機回送・車両損料",
           "quantity": 1,
           "unit": "式",
-          "unitPrice": 12000,
+          "unitPrice": 16000,
           "note": "ミニユンボ・ダンプ"
         },
         {
           "name": "現場管理費・事務通信費",
           "quantity": 1,
           "unit": "式",
-          "unitPrice": 10000,
+          "unitPrice": 12000,
           "note": "安全管理・諸届出"
         }
       ]
