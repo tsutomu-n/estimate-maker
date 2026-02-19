@@ -21,11 +21,27 @@ export class LineItem {
 
   // ★追加: JSONオブジェクトからインスタンスを生成する静的メソッド
   static fromJSON(json: Record<string, unknown>): LineItem {
+    const quantity = Number(json.quantity);
+    const parsedQuantity = Number.isFinite(quantity) ? quantity : 0;
+
+    let unitPrice = Number(json.unitPrice);
+    if (!Number.isFinite(unitPrice)) {
+      unitPrice = Number(json.unitPriceExclTax);
+    }
+    if (!Number.isFinite(unitPrice)) {
+      const amount = Number(json.amountExclTax);
+      if (Number.isFinite(amount)) {
+        unitPrice = Number.isFinite(parsedQuantity) && parsedQuantity !== 0
+          ? amount / parsedQuantity
+          : amount;
+      }
+    }
+
     return new LineItem(
       String(json.name ?? ''),
-      Number(json.quantity) || 0,
+      parsedQuantity,
       String(json.unit ?? '式'),
-      Number(json.unitPrice) || 0,
+      Number.isFinite(unitPrice) ? unitPrice : 0,
       String(json.note ?? '')
     );
   }

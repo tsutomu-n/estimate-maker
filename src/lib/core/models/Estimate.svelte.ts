@@ -60,7 +60,9 @@ export class Estimate {
       this.title = String(json.title ?? '');
       this.place = String(json.place ?? '');
       this.date = String(json.date ?? '');
-      this.discount = Number(json.discount) || 0;
+
+      const directDiscount = Number(json.discount);
+      this.discount = Number.isFinite(directDiscount) ? directDiscount : Number(json.discountExclTax) || 0;
 
       // セクションと明細行を再構築（ここが重要）
       if (Array.isArray(json.sections)) {
