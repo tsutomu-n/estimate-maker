@@ -5,8 +5,7 @@
 
   const estimate = new Estimate();
   
-  // Bテーマ固定（官公庁提出向けレイアウト）
-  const isClassicMode = true;
+
 </script>
 
 <div class="flex flex-row min-h-screen bg-gray-800">
@@ -28,7 +27,7 @@
     <!-- プレビュー本体 -->
     <div class="scale-100 origin-top print:scale-100">
       <!-- ★追加: isClassic プロパティを渡す -->
-      <PrintLayout {estimate} isClassic={isClassicMode} />
+      <PrintLayout {estimate} />
     </div>
 
   </div>
