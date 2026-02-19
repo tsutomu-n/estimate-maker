@@ -1,113 +1,179 @@
 {
   "version": "1.0.0",
-  "createdAt": "2026-02-19T00:00:00Z",
-  "customerName": "天野 ",
-  "title": "邸宅解体・撤去工事",
+  "createdAt": "2026-02-18T00:00:00Z",
+  "customerName": "天野",
+  "title": "邸宅解体工事",
   "place": "群馬県甘楽郡南牧村大字小沢1560",
-  "date": "2026年2月19日",
-  "terms": [
-    {
-      "title": "工事概要",
-      "items": [
-        "本見積は2階建て木造住宅の上部解体を対象とし、構造上の安全性を確保するため重機を併用します。",
-        "屋根、壁、内装を含む建物躯体の解体を前提とします。"
-      ]
-    },
-    {
-      "title": "基礎・コンクリート処理条件",
-      "items": [
-        "基礎は既存の一部補強を確認した上で、必要に応じて撤去し、コンクリートガラは処分します。",
-        "基礎の形状により発生量が想定を超えた場合、実費（処分単価）にて追加請求します。"
-      ]
-    },
-    {
-      "title": "一般廃棄物の取り扱い",
-      "items": [
-        "可燃/不燃の分別基準に従い、施主側での分別未対応分は追加費用の対象とします。",
-        "液体・危険物は事前申告を必須とします。"
-      ]
-    }
-  ],
-  "discount": -12000,
-  "taxRate": 0.1,
-  "discountExclTax": -12000,
+  "date": "2026年2月18日",
+  "terms": [],
+  "discount": -40909,
   "sections": [
     {
       "title": "1. 建物解体・撤去工",
       "items": [
         {
-          "name": "木造住宅 解体撤去費",
-          "quantity": 16,
+          "name": "農家住宅解体(小運搬・積込共)",
+          "quantity": 15,
           "unit": "坪",
-          "unitPrice": 23000,
-          "note": "屋根・外壁・内装含む上部解体"
+          "unitPrice": 25000,
+          "note": ""
         },
         {
-          "name": "基礎コンクリート撤去費",
-          "quantity": 1,
-          "unit": "式",
-          "unitPrice": 120000,
-          "note": "土台・布基礎含む（補強撤去）"
-        }
-      ]
-    },
-    {
-      "title": "2. 発生材運搬・処分費",
-      "items": [
-        {
-          "name": "産業廃棄物 運搬処分費",
-          "quantity": 1,
-          "unit": "式",
-          "unitPrice": 120000,
-          "note": "木材・建材・コンクリート混在分"
-        },
-        {
-          "name": "一般廃棄物 収集運搬費",
-          "quantity": 1,
-          "unit": "式",
-          "unitPrice": 35000,
-          "note": "施主分別後の一般ごみ分"
-        }
-      ]
-    },
-    {
-      "title": "3. 諸経費・他",
-      "items": [
-        {
-          "name": "重機回送・車両損料",
-          "quantity": 1,
-          "unit": "式",
-          "unitPrice": 28000,
-          "note": "重機・ダンプ・アタッチメント含む"
-        },
-        {
-          "name": "現場管理費・事務通信費",
-          "quantity": 1,
-          "unit": "式",
+          "name": "農家住宅解体(基礎共)",
+          "quantity": 7.5,
+          "unit": "坪",
           "unitPrice": 22000,
-          "note": "安全管理・騒音・搬出管理"
+          "note": ""
         },
         {
-          "name": "協力員人員費",
-          "quantity": 2,
-          "unit": "人日",
-          "unitPrice": 12000,
-          "note": "補助作業員（安全確保含む）"
+          "name": "専用住宅解体(基礎共)",
+          "quantity": 27,
+          "unit": "坪",
+          "unitPrice": 27000,
+          "note": ""
+        },
+        {
+          "name": "植栽撤去(小木)",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 45000,
+          "note": ""
+        },
+        {
+          "name": "分別積込費",
+          "quantity": 40,
+          "unit": "m3",
+          "unitPrice": 2500,
+          "note": ""
+        },
+        {
+          "name": "石綿含有建材 除去工(レベル3)",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 250000,
+          "note": "手作業剥離"
+        },
+        {
+          "name": "残置物 分別・搬出作業費",
+          "quantity": 49.5,
+          "unit": "坪",
+          "unitPrice": 18000,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "title": "2. 発生材処分費",
+      "items": [
+        {
+          "name": "一般廃棄物 収集運搬・処分費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1200000,
+          "note": "許可業者委託"
+        },
+        {
+          "name": "石膏ボード",
+          "quantity": 15,
+          "unit": "m3",
+          "unitPrice": 28000,
+          "note": ""
+        },
+        {
+          "name": "コンクリートガラ(有筋・無筋)",
+          "quantity": 30,
+          "unit": "m3",
+          "unitPrice": 5400,
+          "note": ""
+        },
+        {
+          "name": "タタミ・繊維くず",
+          "quantity": 30,
+          "unit": "枚",
+          "unitPrice": 2700,
+          "note": ""
+        },
+        {
+          "name": "石綿含有産業廃棄物(レベル3)",
+          "quantity": 6,
+          "unit": "m3",
+          "unitPrice": 35000,
+          "note": "安定型処分場(飛散防止)"
+        },
+        {
+          "name": "木くず(解体材・造作材)",
+          "quantity": 80,
+          "unit": "m3",
+          "unitPrice": 4500,
+          "note": ""
+        },
+        {
+          "name": "廃プラ・ガラス陶磁器(混合)",
+          "quantity": 30,
+          "unit": "m3",
+          "unitPrice": 22000,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "title": "3. 運搬費",
+      "items": [
+        {
+          "name": "場内小運搬・重機回送費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 150000,
+          "note": ""
+        },
+        {
+          "name": "産廃・残置物 収集運搬費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 400000,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "title": "4. 仮設・雑工・諸経費",
+      "items": [
+        {
+          "name": "仮設工事(北面・西面・他)",
+          "quantity": 118.8,
+          "unit": "m2",
+          "unitPrice": 1300,
+          "note": ""
+        },
+        {
+          "name": "石綿粉塵 飛散防止対策費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 120000,
+          "note": ""
+        },
+        {
+          "name": "整地・場内片付け清掃",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 80000,
+          "note": ""
+        },
+        {
+          "name": "建設リサイクル法 届出代行費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 30000,
+          "note": ""
+        },
+        {
+          "name": "法定福利・届出管理費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 167560,
+          "note": ""
         }
       ]
     }
-  ],
-  "totals": {
-    "subTotalExclTax": 717000,
-    "totalExclTax": 705000,
-    "taxAmount": 70500,
-    "totalInclTax": 775500
-  },
-  "price": {
-    "currency": "JPY",
-    "exclTax": 705000,
-    "taxRate": 0.1,
-    "tax": 70500,
-    "inclTax": 775500
-  }
+  ]
 }

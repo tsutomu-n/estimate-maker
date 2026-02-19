@@ -25,7 +25,10 @@
 </script>
 
 <div class="w-full overflow-visible" style="margin-bottom: var(--a4-table-mb);">
-	<table class="w-full min-w-full table-fixed border-collapse {tableTextClass} {tableWrapper}">
+	<table
+		class="w-full min-w-full table-fixed border-collapse print-line-items-table {tableTextClass} {tableWrapper}"
+		style="page-break-inside: auto;"
+	>
 		<colgroup>
 			<col style="width: var(--a4-col-name);" />
 			<col style="width: var(--a4-col-qty);" />
@@ -44,10 +47,10 @@
 				<th class="font-ms-gothic text-left" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{headers[5]}</th>
 			</tr>
 		</thead>
-		<tbody>
-			{#each estimate.sections as section}
+		{#each estimate.sections as section}
+			<tbody class="print-section-body">
 				{#if section.items.length > 0}
-				<tr class="break-inside-avoid">
+				<tr class="break-inside-avoid print-row-keep">
 					<td
 						colspan="6"
 						class={sectionHeadingClass}
@@ -63,7 +66,7 @@
 				{/if}
 
 				{#each section.items as item}
-					<tr class="break-inside-avoid {detailsHoverClass}">
+					<tr class="break-inside-avoid print-row-keep {detailsHoverClass}">
 						<td class="align-top {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h); font-size: var(--a4-font-table);">{item.name}</td>
 						<td class="text-center align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{item.quantity}</td>
 						<td class="text-center align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{item.unit}</td>
@@ -74,7 +77,7 @@
 				{/each}
 
 				{#if section.items.length > 0}
-					<tr class="break-inside-avoid border-t border-b-2 border-black">
+					<tr class="break-inside-avoid print-row-keep border-t border-b-2 border-black">
 						<td colspan="3" class="border-r border-black"></td>
 						<td class="font-ms-gothic border-r border-black text-center" style="padding: var(--a4-subtotal-cell-pad); font-size: var(--a4-font-note);">
 							{PRINT_TEXT.table.subtotalLabel}
@@ -83,7 +86,37 @@
 						<td class="border-b border-black"></td>
 					</tr>
 				{/if}
-			{/each}
-		</tbody>
+			</tbody>
+		{/each}
 	</table>
 </div>
+
+<style>
+	@media print {
+		.print-line-items-table,
+		.print-line-items-table th,
+		.print-line-items-table td,
+		.print-line-items-table tr {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+		.print-section-body {
+			page-break-inside: avoid;
+			break-inside: avoid;
+		}
+		.print-row-keep {
+			page-break-inside: avoid;
+			break-inside: avoid;
+		}
+	}
+
+	.print-section-body {
+		page-break-inside: avoid;
+		break-inside: avoid;
+	}
+
+	.print-row-keep {
+		page-break-inside: avoid;
+		break-inside: avoid;
+	}
+</style>
