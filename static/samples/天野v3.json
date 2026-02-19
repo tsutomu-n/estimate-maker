@@ -1,0 +1,207 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2026-02-19T00:00:00Z",
+  "customerName": "天野 茂",
+  "title": "天野邸建物解体工事",
+  "place": "甘楽郡南牧村大字青倉字434番地1",
+  "date": "2026年2月19日",
+  "terms": [],
+  "discount": -107390,
+  "sections": [
+    {
+      "title": "1. 建物解体・撤去工",
+      "items": [
+        {
+          "name": "農家住宅解体費",
+          "quantity": 15,
+          "unit": "坪",
+          "unitPrice": 20000,
+          "note": "小運搬・積込共"
+        },
+        {
+          "name": "農家住宅解体費(基礎共)",
+          "quantity": 7.5,
+          "unit": "坪",
+          "unitPrice": 23000,
+          "note": "倉庫等"
+        },
+        {
+          "name": "専用住宅解体費(基礎型)",
+          "quantity": 27,
+          "unit": "坪",
+          "unitPrice": 25000,
+          "note": "母屋・スケルトン解体"
+        },
+        {
+          "name": "植栽撤去(小木)",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 40000,
+          "note": "抜根"
+        },
+        {
+          "name": "石綿含有建材 除去工",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 250000,
+          "note": "屋根・軒天 手作業剥離"
+        },
+        {
+          "name": "分別・搬出・養生作業費",
+          "quantity": 49.5,
+          "unit": "坪",
+          "unitPrice": 17500,
+          "note": "一般ゴミ・産廃仕分"
+        }
+      ]
+    },
+    {
+      "title": "2. 発生材処分費",
+      "items": [
+        {
+          "name": "一般廃棄物 収集運搬・処分",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 1600000,
+          "note": "許可業者委託(一式)"
+        },
+        {
+          "name": "石膏ボード",
+          "quantity": 10,
+          "unit": "m3",
+          "unitPrice": 28000,
+          "note": ""
+        },
+        {
+          "name": "コンクリートガラ",
+          "quantity": 20,
+          "unit": "m3",
+          "unitPrice": 5000,
+          "note": ""
+        },
+        {
+          "name": "タタミ・繊維くず",
+          "quantity": 30,
+          "unit": "枚",
+          "unitPrice": 2700,
+          "note": ""
+        },
+        {
+          "name": "石綿含有産業廃棄物",
+          "quantity": 6,
+          "unit": "m3",
+          "unitPrice": 35000,
+          "note": "安定型処分場"
+        },
+        {
+          "name": "木くず(解体材・造作材)",
+          "quantity": 80,
+          "unit": "m3",
+          "unitPrice": 4400,
+          "note": ""
+        },
+        {
+          "name": "廃プラ・ガラス陶磁器(混合)",
+          "quantity": 8.5,
+          "unit": "m3",
+          "unitPrice": 22000,
+          "note": ""
+        },
+        {
+          "name": "家電リサイクル・フロン回収費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 45000,
+          "note": "法定フロン回収・破壊"
+        },
+        {
+          "name": "カワラ",
+          "quantity": 8,
+          "unit": "m3",
+          "unitPrice": 8000,
+          "note": ""
+        },
+        {
+          "name": "外壁モルタル類",
+          "quantity": 8.4,
+          "unit": "m3",
+          "unitPrice": 18000,
+          "note": ""
+        },
+        {
+          "name": "混合廃棄物",
+          "quantity": 8,
+          "unit": "m3",
+          "unitPrice": 23000,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "title": "3. 運搬費",
+      "items": [
+        {
+          "name": "場内小運搬・重機回送運",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 200000,
+          "note": "大型重機・回送運"
+        },
+        {
+          "name": "屋内・残置物 収集運搬費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 300000,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "title": "4. 仮設・雑工・諸経費",
+      "items": [
+        {
+          "name": "仮設工事(北面・西面・他)",
+          "quantity": 118.8,
+          "unit": "m2",
+          "unitPrice": 1300,
+          "note": ""
+        },
+        {
+          "name": "石綿粉塵 飛散防止対策費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 120000,
+          "note": "湿潤化・保護具"
+        },
+        {
+          "name": "整地・場内片付け清掃",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 70000,
+          "note": ""
+        },
+        {
+          "name": "防草シート張り工",
+          "quantity": 90,
+          "unit": "m2",
+          "unitPrice": 2500,
+          "note": "安定型現場施工工"
+        },
+        {
+          "name": "法定福利・届出管理費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 140000,
+          "note": "協力員関連諸経費"
+        },
+        {
+          "name": "アスベスト事前調査費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 40000,
+          "note": ""
+        }
+      ]
+    }
+  ]
+}
