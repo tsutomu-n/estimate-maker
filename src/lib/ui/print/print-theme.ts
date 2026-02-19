@@ -20,6 +20,7 @@ export const PRINT_TOKENS = {
       noteText: '10pt',
       tableText: '11pt',
       sectionTitle: '10.5pt',
+      sectionTitleLineHeight: '1.28',
       docTitle: '22pt',
       notesTitle: '10pt',
       docTitleTracking: '0.4em',
@@ -41,6 +42,7 @@ export const PRINT_TOKENS = {
       tablePadRightName: '4px',
       tablePadRightAmount: '4px',
       rowSpacing: '1',
+      sectionHeadingPy: '2px',
       sectionGap: '0.3rem',
       sectionBodyGap: '0.2rem',
       sectionPaddingBottom: '1',
@@ -73,12 +75,12 @@ export const PRINT_TOKENS = {
     },
     table: {
       cols: {
-        name: '28%',
-        qty: '8%',
-        unit: '7%',
-        unitPrice: '13%',
-        amount: '20%',
-        note: '24%'
+        name: '30%',
+        qty: '9%',
+        unit: '8%',
+        unitPrice: '10%',
+        amount: '15%',
+        note: '28%'
       }
     }
   }

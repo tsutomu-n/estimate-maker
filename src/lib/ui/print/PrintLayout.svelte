@@ -40,6 +40,7 @@
     --a4-font-doc-title:${tokens.typography.docTitle};
     --a4-font-notes-title:${tokens.typography.notesTitle};
     --a4-track-doc-title:${tokens.typography.docTitleTracking};
+    --a4-section-line-height:${tokens.typography.sectionTitleLineHeight};
     --a4-customer-bottom:${tokens.typography.headerCustomerBottom};
     --a4-font-amount:${tokens.typography.amountValue};
     --a4-font-amount-label:${tokens.typography.amountLabel};
@@ -53,6 +54,7 @@
     --a4-meta-gap:${tokens.spacing.metaGap};
     --a4-date-gap:${tokens.spacing.dateGap};
     --a4-header-meta-left:${tokens.spacing.headerMetaLeft};
+    --a4-section-heading-py:${tokens.spacing.sectionHeadingPy};
     --a4-section-heading-pb:${tokens.spacing.sectionHeadingPb};
     --a4-section-heading-pl:${tokens.spacing.sectionHeadingPl};
     --a4-grand-total-py-outer:${tokens.spacing.grandTotalPyOuter};

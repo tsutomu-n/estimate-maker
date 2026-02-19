@@ -51,9 +51,13 @@
 						<td
 							colspan="6"
 							class={sectionHeadingClass}
-							style="padding-top: var(--a4-section-gap); padding-bottom: var(--a4-section-heading-pb); padding-left: var(--a4-section-heading-pl);"
+							style="padding-top: calc(var(--a4-section-gap) + var(--a4-section-heading-py)); padding-bottom: var(--a4-section-heading-pb); padding-left: var(--a4-section-heading-pl);"
 						>
-						<span class="font-ms-gothic" style="font-size: var(--a4-section-size);">{section.title}</span>
+						<span
+							class="font-ms-gothic"
+							style="font-size: var(--a4-section-size); line-height: var(--a4-section-line-height);"
+							>{section.title}</span
+						>
 					</td>
 					</tr>
 				{/if}
