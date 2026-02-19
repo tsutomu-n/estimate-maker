@@ -4,7 +4,42 @@
   import PrintLayout from '$lib/ui/print/PrintLayout.svelte';
 
   const estimate = new Estimate();
-  
+
+  function handleDownloadJSON() {
+    const payload = {
+      version: '1.0.0',
+      createdAt: new Date().toISOString(),
+      customerName: estimate.customerName,
+      title: estimate.title,
+      place: estimate.place,
+      date: estimate.date,
+      terms: estimate.terms,
+      discount: estimate.discount,
+      sections: estimate.sections.map((section) => ({
+        title: section.title,
+        items: section.items.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          unit: item.unit,
+          unitPrice: item.unitPrice,
+          note: item.note
+        }))
+      }))
+    };
+
+    const data = JSON.stringify(payload, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const safeName = (estimate.customerName || 'estimate')
+      .replace(/[\\/:*?"<>|]/g, '_')
+      .replace(/\s+/g, '_');
+    a.href = url;
+    a.download = `${safeName}_見積データ_${ymd}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
 </script>
 
@@ -33,11 +68,20 @@
   </div>
 </div>
 
-<!-- 印刷ボタン -->
+<!-- 印刷/JSONボタン -->
+<div class="fixed bottom-8 right-8 flex items-center gap-3 print:hidden z-50">
   <button
-  class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-500 text-white font-bold font-ms-gothic py-4 px-8 rounded-full shadow-2xl flex items-center gap-2 print:hidden z-50 transition-transform hover:scale-105"
-  onclick={() => window.print()}
->
-  <span class="text-2xl">🖨</span>
-  <span>見積書を発行</span>
-</button>
+    class="bg-slate-700 hover:bg-slate-600 text-white font-bold font-ms-gothic py-4 px-6 rounded-full shadow-2xl flex items-center gap-2 transition-transform hover:scale-105"
+    onclick={handleDownloadJSON}
+  >
+    <span class="text-xl">💾</span>
+    <span>JSON形式でダウンロード</span>
+  </button>
+  <button
+    class="bg-blue-600 hover:bg-blue-500 text-white font-bold font-ms-gothic py-4 px-8 rounded-full shadow-2xl flex items-center gap-2 transition-transform hover:scale-105"
+    onclick={() => window.print()}
+  >
+    <span class="text-2xl">🖨</span>
+    <span>見積書を発行</span>
+  </button>
+</div>

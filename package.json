@@ -3,11 +3,11 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
-"scripts": {
+	"scripts": {
 		"dev": "vite dev",
 		"build": "bun run build:static",
-		"build:static": "cross-env ADAPTER_TARGET=static vite build",
-		"build:node": "cross-env ADAPTER_TARGET=node vite build",
+		"build:static": "ADAPTER_TARGET=static vite build",
+		"build:node": "ADAPTER_TARGET=node vite build",
 		"preview": "vite preview",
 		"start:node": "node build",
 		"prepare": "svelte-kit sync || echo ''",

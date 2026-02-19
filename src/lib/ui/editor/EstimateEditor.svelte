@@ -1,9 +1,6 @@
 <script lang="ts">
   import type { Estimate } from '$lib/core/models/Estimate.svelte';
-  import type { EstimateSchema } from '$lib/types/schema';
   import { formatMoney } from '$lib/core/utils/money';
-  import { LARGE_HOUSE_TEMPLATE } from '$lib/data/templates/largeHouse';
-  import { SMALL_SHED_TEMPLATE } from '$lib/data/templates/smallShed';
   import SectionRow from './SectionRow.svelte';
 
   // Svelte 5 Props
@@ -99,13 +96,6 @@
     }
   }
 
-  function applyTemplate(template: EstimateSchema, label: string) {
-    if (!confirm(`「${label}」を読み込みますか？\n現在の入力内容は上書きされます。`)) {
-      return;
-    }
-    estimate.loadFromJSON(template);
-    targetPriceInput = estimate.grandTotal;
-  }
 </script>
 
 <div class="p-4 space-y-6 bg-slate-50 min-h-screen pb-40 text-[10.5pt] leading-relaxed tracking-[0.01em]">
@@ -139,19 +129,6 @@
             <span>💾</span> JSON保存
         </button>
 
-        <!-- テンプレート読込ボタン -->
-        <button
-          class="px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium font-ms-gothic rounded border border-gray-300 shadow-sm flex items-center gap-2 transition-colors"
-          onclick={() => applyTemplate(SMALL_SHED_TEMPLATE, '小屋解体（標準プラン）')}
-        >
-          <span>📄</span> 小屋解体
-        </button>
-        <button
-          class="px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium font-ms-gothic rounded border border-gray-300 shadow-sm flex items-center gap-2 transition-colors"
-          onclick={() => applyTemplate(LARGE_HOUSE_TEMPLATE, '厚基礎プラン')}
-        >
-          <span>🏠</span> 厚基礎プラン
-        </button>
     </div>
   </div>
 

@@ -41,7 +41,13 @@ body {
 	margin: 0;
 }
 
-@page :left,
+@page :left {
+	margin-top: 15mm;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 @page :right {
 	margin-top: 15mm;
 	margin-bottom: 0;
