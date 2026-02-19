@@ -5,51 +5,71 @@
   "title": "木造倉庫 解体撤去工事",
   "place": "南牧村小沢1560",
   "date": "2026年2月18日",
-  "scenarioId": "foundation_thin",
-  "scenarioTitle": "基礎厚15cm以内（標準）",
-  "assumptions": {
-    "tax": { "taxRate": 0.1, "rounding": "round" },
-    "generalWaste": { "policy": "customer_disposes", "ifCustomerCannotDispose": "consult" },
-    "industrialWaste": { "policy": "seimou_handles_all" },
-    "foundation": "厚さ15cm以内の標準基礎を想定（ブレーカー不要）"
-  },
-  "taxRate": 0.1,
-  "discountExclTax": -5455,
+  "discount": -5455,
   "sections": [
     {
       "title": "1. 建物解体・撤去工",
       "items": [
-        { "name": "木造倉庫 解体撤去費", "quantity": 5.2, "unit": "坪", "unitPriceExclTax": 20000, "amountExclTax": 104000, "note": "屋根トタン・内装材共（産業廃棄物は当社で処理）" },
-        { "name": "基礎コンクリート撤去費", "quantity": 1, "unit": "式", "unitPriceExclTax": 30000, "amountExclTax": 30000, "note": "厚さ15cm以内 標準基礎" }
+        {
+          "name": "木造倉庫 解体撤去費",
+          "quantity": 5.2,
+          "unit": "坪",
+          "unitPrice": 20000,
+          "note": "屋根トタン・内装材共（産業廃棄物は当社で処理）"
+        },
+        {
+          "name": "基礎コンクリート撤去費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 30000,
+          "note": "厚さ15cm以内 標準基礎"
+        }
       ]
     },
     {
       "title": "2. 発生材運搬・処分費",
       "items": [
-        { "name": "産業廃棄物 運搬処分費", "quantity": 1, "unit": "式", "unitPriceExclTax": 55000, "amountExclTax": 55000, "note": "木くず・コンガラ・廃プラ等（産業廃棄物は当社で処理）" },
-        { "name": "一般廃棄物（生活ごみ）収集運搬費", "quantity": 0, "unit": "式", "unitPriceExclTax": 0, "amountExclTax": 0, "note": "お客様自己処分。自己処分が難しい場合は協議（別途）" }
+        {
+          "name": "産業廃棄物 運搬処分費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 55000,
+          "note": "木くず・コンガラ・廃プラ等（産業廃棄物は当社で処理）"
+        },
+        {
+          "name": "一般廃棄物（生活ごみ）収集運搬費",
+          "quantity": 0,
+          "unit": "式",
+          "unitPrice": 0,
+          "note": "お客様自己処分。お客様自己処分が難しい場合は協議（別途）"
+        }
       ]
     },
     {
       "title": "3. 諸経費・他",
       "items": [
-        { "name": "重機回送・車両損料", "quantity": 1, "unit": "式", "unitPriceExclTax": 12000, "amountExclTax": 12000, "note": "ミニユンボ・ダンプ（自社）" },
-        { "name": "現場管理費", "quantity": 1, "unit": "式", "unitPriceExclTax": 20000, "amountExclTax": 20000, "note": "諸届出・安全管理" },
-        { "name": "諸雑費（燃料・消耗品等）", "quantity": 1, "unit": "式", "unitPriceExclTax": 4455, "amountExclTax": 4455, "note": "燃料・消耗品／端数調整含" }
+        {
+          "name": "重機回送・車両損料",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 12000,
+          "note": "ミニユンボ・ダンプ（自社）"
+        },
+        {
+          "name": "現場管理費",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 20000,
+          "note": "諸届出・安全管理"
+        },
+        {
+          "name": "諸雑費（燃料・消耗品等）",
+          "quantity": 1,
+          "unit": "式",
+          "unitPrice": 4455,
+          "note": "燃料・消耗品／端数調整含"
+        }
       ]
     }
-  ],
-  "totals": {
-    "subTotalExclTax": 225455,
-    "totalExclTax": 220000,
-    "taxAmount": 22000,
-    "totalInclTax": 242000
-  },
-  "price": {
-    "currency": "JPY",
-    "exclTax": 220000,
-    "taxRate": 0.1,
-    "tax": 22000,
-    "inclTax": 242000
-  }
+  ]
 }

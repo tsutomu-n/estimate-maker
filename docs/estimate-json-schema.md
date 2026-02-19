@@ -13,6 +13,10 @@
   `Number()` / `String()` で受け入れを優先しているため、
   **実運用では追加で JSON Schema バリデーションを入れると安全性が上がります**。
 
+推奨データを作る場合は、まず次を参照してください。  
+- `docs/estimate-json-guide-recommended.md`
+- 初心者向けの作成手順は `docs/estimate-json-guide-junior-se.md`
+
 ## 仕様（TypeScript 型）
 
 定義元: `src/lib/types/schema.ts`
