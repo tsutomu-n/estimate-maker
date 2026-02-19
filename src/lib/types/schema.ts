@@ -13,9 +13,15 @@ export interface EstimateSchema {
   
   // 明細データ (階層構造)
   sections: SectionSchema[];
+  terms?: TermSectionSchema[]; // 特約・備考（任意）
   
   // 調整値
   discount: number;     // 出精値引き
+}
+
+export interface TermSectionSchema {
+  title: string;
+  items: string[];
 }
 
 export interface SectionSchema {

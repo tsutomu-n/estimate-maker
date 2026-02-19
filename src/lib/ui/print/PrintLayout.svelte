@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Estimate } from '$lib/core/models/Estimate.svelte';
+	import type { TermSectionSchema } from '$lib/types/schema';
 	import { formatMoney } from '$lib/core/utils/money';
 
 	// Props definition
@@ -7,6 +8,22 @@
 
 	// 電子印鑑の表示状態 (デフォルトOFF)
 	let showSeal = $state(false);
+	const defaultTerms: TermSectionSchema[] = [
+		{
+			title: '備考・条件',
+			items: [
+				'地中埋設物について：浄化槽、井戸、旧基礎、杭、埋設配管等が工事中に発見された場合は、別途協議の上、追加費用を申し受ける場合がございます。',
+				'アスベストについて：事前調査に基づく対策費用を含みますが、隠蔽部より新たな石綿含有建材が発見された場合は別途協議となります。',
+				'お客様支給品：工事に伴う散水用の水、および電気等のライフライン費用は御支給にてお願いいたします。',
+				'残置物処分：屋内残置物（一般廃棄物）の処分費は、地域の許可業者への収集運搬・処分委託費としての計上です。',
+				'支払条件：完了後、翌月末現金振込（または別途契約書による）',
+				'有効期限：発行日より3ヶ月'
+			]
+		}
+	];
+	const terms = $derived(
+		Array.isArray(estimate.terms) && estimate.terms.length > 0 ? estimate.terms : defaultTerms
+	);
 
 	// Bテーマ（固定）
 	const A4_PRINT_TOKENS = {
@@ -547,40 +564,21 @@
 		class="break-inside-avoid border border-black"
 		style="padding: var(--a4-notes-pad); font-size: var(--a4-font-note);"
 	>
-		<h3
-			class="font-ms-gothic inline-block border-b border-black font-bold"
-			style="font-size: var(--a4-font-notes-title); margin-bottom: var(--a4-meta-gap);"
-		>
-			【 備考・条件 】
-		</h3>
-		<ul
-			class="list-outside list-disc leading-relaxed opacity-90"
-			style="margin-left: var(--a4-notes-list-ml); row-gap: var(--a4-notes-list-gap); display: flex; flex-direction: column;"
-		>
-			<li>
-				<span class="font-ms-gothic font-bold">地中埋設物について：</span>
-				浄化槽、井戸、旧基礎、杭、埋設配管等が工事中に発見された場合は、別途協議の上、追加費用を申し受ける場合がございます。
-			</li>
-			<li>
-				<span class="font-ms-gothic font-bold">アスベストについて：</span>
-				事前調査に基づく対策費用を含みますが、隠蔽部より新たな石綿含有建材が発見された場合は別途協議となります。
-			</li>
-			<li>
-				<span class="font-ms-gothic font-bold">お客様支給品：</span>
-				工事に伴う散水用の水、および電気等のライフライン費用は御支給にてお願いいたします。
-			</li>
-			<li>
-				<span class="font-ms-gothic font-bold">残置物処分：</span>
-				屋内残置物（一般廃棄物）の処分費は、地域の許可業者への収集運搬・処分委託費としての計上です。
-			</li>
-			<li>
-				<span class="font-ms-gothic font-bold">支払条件：</span>
-				完了後、翌月末現金振込（または別途契約書による）
-			</li>
-			<li>
-				<span class="font-ms-gothic font-bold">有効期限：</span>
-				発行日より3ヶ月
-			</li>
-		</ul>
+		{#each terms as term}
+			<h3
+				class="font-ms-gothic inline-block border-b border-black font-bold"
+				style="font-size: var(--a4-font-notes-title); margin-bottom: var(--a4-meta-gap);"
+			>
+				【 {term.title} 】
+			</h3>
+			<ul
+				class="list-outside list-disc leading-relaxed opacity-90"
+				style="margin-left: var(--a4-notes-list-ml); row-gap: var(--a4-notes-list-gap); display: flex; flex-direction: column;"
+			>
+				{#each term.items as item}
+					<li>{item}</li>
+				{/each}
+			</ul>
+		{/each}
 	</div>
 </div>

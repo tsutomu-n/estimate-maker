@@ -1,27 +1,43 @@
 {
   "version": "1.0.0",
-  "createdAt": "2026-02-18T00:00:00Z",
+  "createdAt": "2026-02-19T00:00:00Z",
   "customerName": "田村友秀",
   "title": "木造倉庫 解体撤去工事",
-  "place": "南牧村小沢1560",
-  "date": "2026年2月18日",
-  "scenarioId": "foundation_thin_cap_226k",
-  "scenarioTitle": "基礎撤去（薄基礎想定）／税抜上限226,000（値引▲5,455）",
+  "place": "群馬県甘楽郡南牧村大字小沢1560",
+  "date": "2026年2月19日",
+  "scenarioId": "foundation_irregular",
+  "scenarioTitle": "基礎コンクリート撤去（不均一基礎）",
   "assumptions": {
     "tax": { "taxRate": 0.1, "rounding": "round" },
     "generalWaste": {
       "policy": "customer_disposes",
       "ifCustomerCannotDispose": "consult",
-      "note": "生活ごみ（一般廃棄物）は原則お客様自己処分。自己処分が困難な場合は協議（別途）。"
+      "note": "※お客様ご自身での処分"
     },
     "industrialWaste": {
       "policy": "seimou_handles_all",
-      "note": "産業廃棄物（解体材・コンガラ・廃プラ等）は当社で分別・搬出・処分。"
+      "note": "木くず・コンガラ・廃プラ等を含む産業廃棄物を当社で分別・処分（マニフェスト管理）。"
     },
-    "foundation": "薄基礎想定（ブレーカー不要）。施工時に軽微と確認できれば減額精算。厚さ38cm級等でブレーカー必要な場合は厚基礎案へ切替協議。"
+    "foundation": "※重機併用・手壊し、不均一基礎対応。"
   },
+  "terms": [
+    {
+      "title": "基礎コンクリートに関する特約",
+      "items": [
+        "本見積は、基礎厚が不均一であることを前提に、コンクリートガラ排出量4.0トン（4tダンプ約1台分）までの処分費を含みます。",
+        "掘削の結果、4.0トンを超過した場合は、処分場の計量伝票に基づき、超過分について実費（処分単価×超過重量）で別途ご精算いたします。"
+      ]
+    },
+    {
+      "title": "一般廃棄物の施主処分",
+      "items": [
+        "屋内に残る紙くず、衣類、布、ビニール類、液体（洗剤・農薬等）は、工事着手前に施主様のご負担で処分（地域のゴミ出し等）していただきます。",
+        "硬質プラスチック（かご等）、金属（農具等）、陶器は当社で処分いたします。"
+      ]
+    }
+  ],
   "taxRate": 0.1,
-  "discountExclTax": -5455,
+  "discountExclTax": -5000,
   "sections": [
     {
       "title": "1. 建物解体・撤去工",
@@ -35,12 +51,12 @@
           "note": "屋根トタン・内装材共"
         },
         {
-          "name": "基礎コンクリート撤去費（薄基礎想定）",
+          "name": "基礎コンクリート撤去費",
           "quantity": 1,
           "unit": "式",
           "unitPriceExclTax": 30000,
           "amountExclTax": 30000,
-          "note": "ブレーカー不要の範囲を前提（厚基礎の場合は別途切替）"
+          "note": "※不均一基礎（DIY）対応"
         }
       ]
     },
@@ -53,15 +69,15 @@
           "unit": "式",
           "unitPriceExclTax": 55000,
           "amountExclTax": 55000,
-          "note": "木くず・コンガラ・廃プラ等（産業廃棄物は当社で処理）"
+          "note": "木くず・廃プラ・コンガラ（マニフェスト管理）"
         },
         {
           "name": "一般廃棄物（生活ごみ）収集運搬費",
           "quantity": 0,
-          "unit": "式",
+          "unit": "-",
           "unitPriceExclTax": 0,
           "amountExclTax": 0,
-          "note": "お客様自己処分。自己処分が難しい場合は協議（別途）。"
+          "note": "対象外"
         }
       ]
     },
@@ -72,31 +88,23 @@
           "name": "重機回送・車両損料",
           "quantity": 1,
           "unit": "式",
-          "unitPriceExclTax": 12000,
-          "amountExclTax": 12000,
-          "note": "ミニユンボ・ダンプ（自社）"
+          "unitPriceExclTax": 15000,
+          "amountExclTax": 15000,
+          "note": "ミニユンボ・ダンプ燃料"
         },
         {
-          "name": "現場管理費",
+          "name": "現場管理費・事務通信費",
           "quantity": 1,
           "unit": "式",
-          "unitPriceExclTax": 26000,
-          "amountExclTax": 26000,
-          "note": "諸届出・安全管理"
-        },
-        {
-          "name": "諸雑費（燃料・消耗品等）",
-          "quantity": 1,
-          "unit": "式",
-          "unitPriceExclTax": 4455,
-          "amountExclTax": 4455,
-          "note": "燃料・消耗品／端数調整含"
+          "unitPriceExclTax": 27000,
+          "amountExclTax": 27000,
+          "note": "安全管理・諸届出"
         }
       ]
     }
   ],
   "totals": {
-    "subTotalExclTax": 231455,
+    "subTotalExclTax": 231000,
     "totalExclTax": 226000,
     "taxAmount": 22600,
     "totalInclTax": 248600

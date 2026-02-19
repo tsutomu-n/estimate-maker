@@ -1,5 +1,6 @@
 import { Section } from './Section.svelte';
 import { calculateTax } from '../utils/money';
+import type { TermSectionSchema } from '$lib/types/schema';
 
 export class Estimate {
   customerName = $state('');
@@ -8,6 +9,7 @@ export class Estimate {
   date = $state('');
   sections = $state<Section[]>([]);
   discount = $state(0);
+  terms = $state<TermSectionSchema[]>([]);
 
   constructor() {
     // デフォルト初期化（変更なし）
@@ -26,6 +28,7 @@ export class Estimate {
       new Section('4. 仮設・雑工・諸経費')
     ];
     this.discount = 0;
+    this.terms = [];
   }
 
   get baseTotal() {
@@ -67,6 +70,17 @@ export class Estimate {
       // セクションと明細行を再構築（ここが重要）
       if (Array.isArray(json.sections)) {
         this.sections = (json.sections as Record<string, unknown>[]).map((s) => Section.fromJSON(s));
+      }
+
+      if (Array.isArray(json.terms)) {
+        this.terms = (json.terms as Record<string, unknown>[]).map((term) => ({
+          title: String(term['title'] ?? '備考・条件'),
+          items: Array.isArray(term['items'])
+            ? (term['items'] as unknown[]).map((item) => String(item ?? '')).filter((item) => item.trim() !== '')
+            : []
+        }));
+      } else {
+        this.terms = [];
       }
       
       console.log('✅ Data loaded successfully');
