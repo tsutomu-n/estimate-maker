@@ -25,7 +25,7 @@
       "title": "基礎コンクリートに関する特約",
       "items": [
         "本見積は、基礎厚が不均一であることを前提に、コンクリートガラ排出量4.0トン（約1.8〜2.2m3）までの処分費を含みます。",
-        "掘削の結果、上記を超過した場合は、処分場の計量伝票に基づき、処分単価8,000円/m3で超過分を実費精算いたします。"
+        "掘削の結果、上記を超過した場合は、処分場の計量伝票に基づき、処分単価6,500円/m3で超過分を実費精算いたします。"
       ]
     },
     {
@@ -37,7 +37,7 @@
     }
   ],
   "taxRate": 0.1,
-  "discountExclTax": -5000,
+  "discountExclTax": -2000,
   "sections": [
     {
       "title": "1. 建物解体・撤去工",
@@ -88,32 +88,32 @@
           "name": "重機回送・車両損料",
           "quantity": 1,
           "unit": "式",
-          "unitPriceExclTax": 20000,
-          "amountExclTax": 20000,
-          "note": "ミニユンボ（ブレーカー）・ダンプ"
+          "unitPriceExclTax": 34400,
+          "amountExclTax": 34400,
+          "note": "ミニユンボ（ブレーカー）・ダンプ／基礎破砕追加対応"
         },
         {
           "name": "現場管理費・事務通信費",
           "quantity": 1,
           "unit": "式",
-          "unitPriceExclTax": 27000,
-          "amountExclTax": 27000,
+          "unitPriceExclTax": 13000,
+          "amountExclTax": 13000,
           "note": "安全管理・諸届出"
         }
       ]
     }
   ],
   "totals": {
-    "subTotalExclTax": 225600,
-    "totalExclTax": 220600,
-    "taxAmount": 22060,
-    "totalInclTax": 242660
+    "subTotalExclTax": 226000,
+    "totalExclTax": 224000,
+    "taxAmount": 22400,
+    "totalInclTax": 246400
   },
   "price": {
     "currency": "JPY",
-    "exclTax": 220600,
+    "exclTax": 224000,
     "taxRate": 0.1,
-    "tax": 22060,
-    "inclTax": 242660
+    "tax": 22400,
+    "inclTax": 246400
   }
 }
