@@ -32,7 +32,7 @@
 	<!-- ② 2カラム：宛名・工事情報 ／ 自社情報 -->
 	<div
 		class="grid items-start border-b-2 {borderColor}"
-		style="grid-template-columns: minmax(0,1fr) minmax(0,240px); column-gap: 6mm; padding-bottom: var(--a4-grid-pb);"
+		style="grid-template-columns: minmax(0,1fr) minmax(0,280px); column-gap: 6mm; padding-bottom: var(--a4-grid-pb);"
 	>
 		<!-- 宛名・工事情報 -->
 		<div class="min-w-0">

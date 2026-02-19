@@ -9,8 +9,7 @@
 	import PrintTerms from './PrintTerms.svelte';
 
 	// Props definition
-	let { estimate, isClassic: _isClassic = true }: { estimate: Estimate; isClassic?: boolean } = $props();
-	void _isClassic;
+	let { estimate }: { estimate: Estimate } = $props();
 
 	// 電子印鑑の表示状態 (デフォルトOFF)
 	let showSeal = $state(false);
@@ -172,7 +171,6 @@
 		{numFont}
 		{tableTextClass}
 		{tableWrapper}
-		{subtotalAccentClass}
 	/>
 
 	<PrintTotals
