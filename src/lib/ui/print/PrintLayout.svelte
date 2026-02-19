@@ -32,6 +32,7 @@
     --a4-font-customer:${tokens.typography.customerName};
     --a4-font-meta:${tokens.typography.headingMeta};
     --a4-font-company:${tokens.typography.companyTitle};
+    --a4-font-representative:${tokens.typography.representative};
     --a4-font-permit:${tokens.typography.permitText};
     --a4-permit-pt:${tokens.typography.permitTopSpacing};
     --a4-font-note:${tokens.typography.noteText};

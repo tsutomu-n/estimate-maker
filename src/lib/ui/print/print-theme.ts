@@ -15,6 +15,7 @@ export const PRINT_TOKENS = {
       customerName: '16pt',
       headingMeta: '9pt',
       companyTitle: '11pt',
+      representative: '10.5pt',
       permitText: '8pt',
       permitTopSpacing: '0.3rem',
       noteText: '10pt',

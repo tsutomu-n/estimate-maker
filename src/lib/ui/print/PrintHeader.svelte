@@ -80,7 +80,7 @@
 				>
 					{PRINT_TEXT.headerCompanyName}
 				</p>
-				<p>{PRINT_TEXT.headerRepresentative}</p>
+				<p style="font-size: var(--a4-font-representative);">{PRINT_TEXT.headerRepresentative}</p>
 				<p style="margin-top: var(--a4-meta-gap);">{PRINT_TEXT.zipCodeLabel}</p>
 				<p class="leading-tight break-words whitespace-normal">
 					{PRINT_TEXT.address}
