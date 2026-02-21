@@ -15,7 +15,7 @@
 	} = $props();
 </script>
 
-<header style="margin-bottom: var(--a4-header-mb);">
+<header data-print-block="header" style="margin-bottom: var(--a4-header-mb);">
 	<!-- ① 御見積書タイトル（全幅・中央） -->
 	<div
 		class="border-b-2 text-center {borderColor}"

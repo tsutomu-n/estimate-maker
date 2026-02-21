@@ -20,7 +20,11 @@
 	} = $props();
 </script>
 
-<div class="flex break-inside-avoid justify-end" style="margin-bottom: var(--a4-total-block-mb);">
+<div
+	class="flex break-inside-avoid justify-end"
+	data-print-block="totals"
+	style="margin-bottom: var(--a4-total-block-mb);"
+>
 	<!-- 役所風の場合、合計欄にも枠線を付ける -->
 	<div class="border border-black" style="width: var(--a4-total-width); font-size: var(--a4-font-table);">
 		<!-- 税抜小計 -->

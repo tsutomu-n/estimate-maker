@@ -50,7 +50,11 @@
 		{#each estimate.sections as section}
 			<tbody class="print-section-body">
 				{#if section.items.length > 0}
-				<tr class="break-inside-avoid print-row-keep">
+				<tr
+					class="break-inside-avoid print-row-keep"
+					data-print-block="section-title"
+					data-section-title={section.title}
+				>
 					<td
 						colspan="6"
 						class={sectionHeadingClass}
@@ -66,7 +70,11 @@
 				{/if}
 
 				{#each section.items as item}
-					<tr class="break-inside-avoid print-row-keep {detailsHoverClass}">
+					<tr
+						class="break-inside-avoid print-row-keep {detailsHoverClass}"
+						data-print-block="line-item"
+						data-section-title={section.title}
+					>
 						<td class="align-top {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h); font-size: var(--a4-font-table);">{item.name}</td>
 						<td class="text-center align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{item.quantity}</td>
 						<td class="text-center align-top {numFont} {cellBorder}" style="padding: var(--a4-pad-v) var(--a4-pad-h);font-size: var(--a4-font-table);">{item.unit}</td>
@@ -77,7 +85,11 @@
 				{/each}
 
 				{#if section.items.length > 0}
-					<tr class="break-inside-avoid print-row-keep border-t border-b-2 border-black">
+					<tr
+						class="break-inside-avoid print-row-keep border-t border-b-2 border-black"
+						data-print-block="section-subtotal"
+						data-section-title={section.title}
+					>
 						<td colspan="3" class="border-r border-black"></td>
 						<td class="font-ms-gothic border-r border-black text-center" style="padding: var(--a4-subtotal-cell-pad); font-size: var(--a4-font-note);">
 							{PRINT_TEXT.table.subtotalLabel}

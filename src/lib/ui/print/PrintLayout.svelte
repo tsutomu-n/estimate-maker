@@ -1,21 +1,38 @@
 <script lang="ts">
-	import type { Estimate } from '$lib/core/models/Estimate.svelte';
-	import { formatMoney } from '$lib/core/utils/money';
-	import { resolvePrintTokens } from './print-theme';
-	import { DEFAULT_TERMS, PRINT_TEXT } from './print-copy';
+import type { Estimate } from '$lib/core/models/Estimate.svelte';
+import { tick } from 'svelte';
+import { formatMoney } from '$lib/core/utils/money';
+import { resolvePrintTokens } from './print-theme';
+import { PRINT_TEXT } from './print-copy';
 	import PrintHeader from './PrintHeader.svelte';
 	import PrintLineItemsTable from './PrintLineItemsTable.svelte';
 	import PrintTotals from './PrintTotals.svelte';
 	import PrintTerms from './PrintTerms.svelte';
 
+	export type A4PreviewPlan = {
+		totalPages: number;
+		sections: { title: string; startPage: number; endPage: number }[];
+		totalsPage: number | null;
+		termsPage: number | null;
+		headerPage: number | null;
+		warning: string | null;
+	};
+
 	// Props definition
-	let { estimate }: { estimate: Estimate } = $props();
+	let {
+		estimate,
+		fitMode = 'fit',
+		onA4PlanChange,
+		showSeal = false
+	}: {
+		estimate: Estimate;
+		fitMode?: 'fit' | 'a4';
+		onA4PlanChange?: (plan: A4PreviewPlan) => void;
+		showSeal?: boolean;
+	} = $props();
 
 	// 電子印鑑の表示状態 (デフォルトOFF)
-	let showSeal = $state(false);
-	const terms = $derived(
-		Array.isArray(estimate.terms) && estimate.terms.length > 0 ? estimate.terms : DEFAULT_TERMS
-	);
+	const terms = $derived(Array.isArray(estimate.terms) ? estimate.terms : []);
 
 	// Bテーマ（固定）
 	const tokens = resolvePrintTokens('b');
@@ -106,10 +123,148 @@
 	const cellBorder = 'border-r border-b border-black last:border-r-0';
 	const totalLabelClass = 'font-ms-gothic font-bold opacity-90';
 	const grandTotalStyle = 'border-2 border-black';
+	let pxPerMm = $state(0);
+	let previewRoot = $state<HTMLElement | null>(null);
+	let a4Plan = $state<A4PreviewPlan>({
+		totalPages: 0,
+		sections: [],
+		totalsPage: null,
+		termsPage: null,
+		headerPage: null,
+		warning: null
+	});
+	const contentWidth = $derived(fitMode === 'a4' ? 'var(--a4-paper-width)' : '100%');
+	const a4Deps = $derived(
+		estimate.sections.length +
+			estimate.baseTotal +
+			estimate.grandTotal +
+			(estimate.terms?.length ?? 0)
+	);
+
+	function toPxFromMm(mm: number) {
+		if (typeof window === 'undefined') return 0;
+		if (pxPerMm > 0) {
+			return pxPerMm * mm;
+		}
+		const test = document.createElement('div');
+		test.style.position = 'absolute';
+		test.style.left = '-99999px';
+		test.style.top = '-99999px';
+		test.style.width = `${mm}mm`;
+		test.style.height = '1px';
+		document.body.appendChild(test);
+		const px = Math.max(0.1, test.getBoundingClientRect().width / mm);
+		document.body.removeChild(test);
+		pxPerMm = px;
+		return pxPerMm * mm;
+	}
+
+	async function updateA4PagePlan() {
+		if (fitMode !== 'a4' || !previewRoot) {
+			a4Plan = {
+				totalPages: 0,
+				sections: [],
+				totalsPage: null,
+				termsPage: null,
+				headerPage: null,
+				warning: null
+			};
+			return;
+		}
+
+		await tick();
+		const blocks = [...previewRoot.querySelectorAll<HTMLElement>('[data-print-block]')];
+		if (blocks.length === 0) return;
+
+		const pxPerMm = toPxFromMm(1);
+		const pageHeightPx = 297 * pxPerMm;
+		const rootTop = previewRoot.getBoundingClientRect().top;
+
+		const sectionMap = new Map<
+			string,
+			{
+				title: string;
+				startPage: number;
+				endPage: number;
+			}
+		>();
+
+		let maxPage = 1;
+		let totalsPage: number | null = null;
+		let termsPage: number | null = null;
+		let headerPage: number | null = null;
+
+		for (const block of blocks) {
+			const kind = block.dataset.printBlock;
+			const sectionTitle = block.dataset.sectionTitle || '';
+			const rect = block.getBoundingClientRect();
+			const top = rect.top - rootTop;
+			const bottom = Math.max(top + rect.height, top);
+			const startPage = Math.max(1, Math.floor(top / pageHeightPx) + 1);
+			const endPage = Math.max(1, Math.floor((bottom - 0.01) / pageHeightPx) + 1);
+			maxPage = Math.max(maxPage, endPage);
+
+			if (kind === 'header') {
+				headerPage = startPage;
+			}
+
+			if (kind === 'totals') {
+				totalsPage = startPage;
+			}
+
+			if (kind === 'terms') {
+				termsPage = startPage;
+			}
+
+			if (sectionTitle && (kind === 'section-title' || kind === 'line-item' || kind === 'section-subtotal')) {
+				const prev = sectionMap.get(sectionTitle);
+				if (!prev) {
+					sectionMap.set(sectionTitle, { title: sectionTitle, startPage, endPage });
+				} else {
+					prev.endPage = Math.max(prev.endPage, endPage);
+				}
+			}
+		}
+
+		const sections = [...sectionMap.values()];
+
+		a4Plan = {
+			totalPages: maxPage,
+			sections,
+			totalsPage,
+			termsPage,
+			headerPage,
+			warning: maxPage > 10 ? 'A4実寸は10枚上限を超える可能性があります。内容を圧縮してください。' : null
+		};
+	}
+
+	$effect(() => {
+		if (fitMode === 'a4' && previewRoot && a4Deps >= 0) {
+			updateA4PagePlan();
+		}
+	});
+
+	$effect(() => {
+		if (fitMode !== 'a4') {
+			a4Plan = {
+				totalPages: 0,
+				sections: [],
+				totalsPage: null,
+				termsPage: null,
+				headerPage: null,
+				warning: null
+			};
+		}
+	});
+
+	$effect(() => {
+		onA4PlanChange?.(a4Plan);
+	});
 
 	let rootStyle = $derived(`
     ${cssVars};
-    width: var(--a4-paper-width);
+    width: ${contentWidth};
+    height: auto;
     min-height: var(--a4-paper-height);
     padding: var(--a4-paper-pad);
     margin: 0;
@@ -127,21 +282,10 @@
 
 <!-- A4用紙設定 -->
 <div
+	bind:this={previewRoot}
 	class="group relative mx-auto overflow-visible bg-white shadow-lg {baseStyle} {themeClass}"
 	style={rootStyle}
 >
-	<!-- ▼ 印刷プレビュー操作ボタン (画面上のみ表示) -->
-	<div
-		class="absolute top-2 right-2 z-50 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 print:hidden"
-	>
-		<button
-			class="font-ms-mincho rounded bg-gray-200 px-2 py-1 text-xs text-slate-800 hover:bg-gray-300"
-			onclick={() => (showSeal = !showSeal)}
-		>
-			{showSeal ? '印影OFF' : '印影ON'}
-		</button>
-	</div>
-
 	<PrintHeader
 		{estimate}
 		{showSeal}
@@ -183,7 +327,9 @@
 	/>
 
 	<!-- ========================================== -->
-	<!-- 備考・条件 -->
+	<!-- 備考・条件（特約/備考がある場合のみ） -->
 	<!-- ========================================== -->
-	<PrintTerms terms={terms} />
+	{#if terms.length > 0}
+		<PrintTerms terms={terms} />
+	{/if}
 </div>

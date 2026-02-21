@@ -6,6 +6,7 @@
 
 <div
 	class="break-inside-avoid border border-black"
+	data-print-block="terms"
 	style="padding: var(--a4-notes-pad); font-size: var(--a4-font-note);"
 >
 	{#each terms as term}
