@@ -25,7 +25,18 @@
 
 	const isFitMode = $derived(previewScaleMode === 'fit');
 	const isA4Mode = $derived(previewScaleMode === 'a4');
-	const hasAnyLineItems = $derived(estimate.sections.some((section) => section.items.length > 0));
+	const hasAnyLineItems = $derived(
+		estimate.sections.some((section) =>
+			section.items.some(
+				(item) =>
+					item.name.trim() !== '' ||
+					item.note.trim() !== '' ||
+					item.unitPrice > 0 ||
+					item.quantity !== 1 ||
+					item.unit !== '式'
+			)
+		)
+	);
 	const a4StatusText = $derived.by(() => {
 		if (a4PreviewPlan.warning) return 'A4: 注意';
 		return isA4Mode ? `A4: ${a4PreviewPlan.totalPages}枚` : 'A4: 未確定';
@@ -129,7 +140,7 @@
 </script>
 
 <main
-	class="min-h-screen overflow-x-auto bg-gradient-to-b from-slate-100 to-sky-50/60 p-4 print:hidden"
+	class="min-h-screen overflow-x-auto bg-slate-100 p-4 print:hidden"
 >
 	<section
 		class="mx-auto flex h-[calc(100vh-2rem)] w-full max-w-[clamp(64rem,95vw,2400px)] min-w-[64rem] flex-row gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
@@ -180,25 +191,23 @@
 					<div class="flex items-end justify-between">
 						<div class="space-y-0.5 text-xs text-slate-500" aria-live="polite" aria-atomic="true">
 							<div class="flex justify-between gap-6">
-								<span>税抜小計</span>
+								<span class="tracking-wide">税抜小計</span>
 								<span class="font-mono tabular-nums">¥ {formatMoney(estimate.baseTotal)}</span>
 							</div>
 							{#if estimate.discount !== 0}
 								<div class="flex justify-between gap-6 text-red-500">
-									<span>値引き</span>
-									<span class="font-mono tabular-nums"
-										>− {formatMoney(Math.abs(estimate.discount))}</span
-									>
+									<span class="tracking-wide">値引き</span>
+									<span class="font-mono tabular-nums">− {formatMoney(Math.abs(estimate.discount))}</span>
 								</div>
 							{/if}
 							<div class="flex justify-between gap-6">
-								<span>消費税 (10%)</span>
+								<span class="tracking-wide">消費税 (10%)</span>
 								<span class="font-mono tabular-nums">¥ {formatMoney(estimate.taxAmount)}</span>
 							</div>
 						</div>
 						<div class="text-right">
 							<div class="text-[10px] text-slate-400">合計 (税込)</div>
-							<div class="font-ms-gothic font-mono text-2xl font-bold text-slate-900 tabular-nums">
+							<div class="font-ms-gothic font-mono text-3xl font-bold text-slate-900 tabular-nums">
 								¥{formatMoney(estimate.grandTotal)}
 							</div>
 						</div>
@@ -238,10 +247,7 @@
 									</div>
 									<div class="flex items-center gap-2">
 										<div class="relative flex-1">
-											<span
-												class="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-xs text-slate-400"
-												>¥</span
-											>
+											<span class="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-xs text-slate-400">¥</span>
 											<label for={ids.targetPrice} class="sr-only">目標金額</label>
 											<input
 												id={ids.targetPrice}
@@ -270,14 +276,14 @@
 				<!-- サブアクション行 -->
 				<div class="flex items-center justify-between gap-2 px-4 py-2">
 					<div class="flex items-center gap-1.5">
-						<!-- ファイル読込 -->
+						<!-- JSON読込 -->
 						<label
 							for="estimate-json-file"
-							class="font-ms-gothic inline-flex h-8 cursor-pointer items-center rounded-md border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none"
+							class="font-ms-gothic inline-flex h-9 cursor-pointer items-center rounded-md border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none"
 							aria-label="JSONファイルを読み込む"
 							title="JSONファイルを読み込む（現在の内容を破棄）"
 						>
-							読込
+							JSON読込
 						</label>
 						<input
 							id="estimate-json-file"
@@ -289,19 +295,19 @@
 						<!-- JSON保存 -->
 						<button
 							type="button"
-							class="font-ms-gothic h-8 rounded-md border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none"
+							class="font-ms-gothic h-9 rounded-md border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none"
 							onclick={handleDownloadJSON}
 							aria-label="見積データをJSONで保存"
 							title="見積データをJSONで保存"
 						>
-							保存
+							JSON保存
 						</button>
 					</div>
 					<div class="flex items-center gap-1.5">
 						<!-- 社印トグル -->
 						<button
 							type="button"
-							class={`font-ms-gothic h-8 rounded-md border px-2.5 text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none ${
+							class={`font-ms-gothic h-9 rounded-md border px-2.5 text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:outline-none ${
 								showSeal
 									? 'border-blue-300 bg-blue-50 text-blue-700'
 									: 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50'
@@ -310,13 +316,13 @@
 							aria-pressed={showSeal}
 							title="社印の表示切替"
 						>
-							+ 社印
+							社印
 						</button>
 						<!-- A4モード切替 -->
 						<div
 							role="radiogroup"
 							aria-label="プレビュー表示モード"
-							class="flex h-8 overflow-hidden rounded-md border border-slate-200"
+							class="flex h-9 overflow-hidden rounded-md border border-slate-200"
 						>
 							<button
 								type="button"

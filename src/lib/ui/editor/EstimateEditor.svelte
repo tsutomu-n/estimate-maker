@@ -14,17 +14,23 @@
 </script>
 
 <div class="relative bg-transparent p-4 pb-5 text-[10.5pt] leading-relaxed tracking-[0.01em]">
-	<section class="space-y-5">
-		<section
-			class="rounded-xl border border-slate-200 bg-gradient-to-r from-white to-sky-50/70 p-4 shadow-sm"
-		>
-			<h2 class="font-ms-gothic text-xs font-bold tracking-[0.08em] text-slate-700">編集ツール</h2>
-			<p class="mt-1 text-xs text-slate-500">
-				基本情報と明細を入力すると、右側の印刷プレビューに即時反映されます
-			</p>
-		</section>
+	<section class="space-y-4">
+		{#if !hasAnyLineItems}
+			<div
+				class="rounded-lg border border-amber-200 bg-amber-50/90 p-4 text-slate-700"
+				aria-live="polite"
+			>
+				<p class="font-ms-gothic mb-2 text-xs font-bold tracking-[0.08em] text-amber-900">はじめに</p>
+				<ol class="list-none space-y-0.5 text-left text-xs">
+					<li class="flex items-start gap-1.5"><span class="font-bold text-amber-700">1.</span> 顧客名・工事名称を入力</li>
+					<li class="flex items-start gap-1.5"><span class="font-bold text-amber-700">2.</span> セクションに明細行を追加</li>
+					<li class="flex items-start gap-1.5"><span class="font-bold text-amber-700">3.</span> 右プレビューで確認して発行</li>
+				</ol>
+				<p class="mt-2 text-xs text-slate-500">基本情報と明細を入力すると、右側の印刷プレビューに即時反映されます</p>
+			</div>
+		{/if}
 
-		<section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+		<section class="rounded-lg border border-slate-200 bg-white p-5">
 			<h2
 				class="font-ms-gothic mb-2 border-b border-slate-200 pb-2 text-sm font-bold tracking-[0.08em] text-slate-700"
 			>
@@ -73,28 +79,6 @@
 				</label>
 			</div>
 		</section>
-
-		{#if !hasAnyLineItems}
-			<div
-				class="rounded-lg border border-amber-200 bg-amber-50/90 p-4 text-slate-700 shadow-sm"
-				aria-live="polite"
-			>
-				<p class="font-ms-gothic mb-1 text-xs font-bold tracking-[0.08em] text-amber-900">
-					はじめに
-				</p>
-				<ol class="list-none space-y-0.5 text-left text-xs">
-					<li class="flex items-start gap-1.5">
-						<span class="font-bold text-amber-700">1.</span> 顧客名・工事名称を入力
-					</li>
-					<li class="flex items-start gap-1.5">
-						<span class="font-bold text-amber-700">2.</span> セクションに明細行を追加
-					</li>
-					<li class="flex items-start gap-1.5">
-						<span class="font-bold text-amber-700">3.</span> 右プレビューで確認して発行
-					</li>
-				</ol>
-			</div>
-		{/if}
 
 		<div class="space-y-4">
 			{#each estimate.sections as section, sectionIndex}

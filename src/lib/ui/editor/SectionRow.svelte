@@ -9,7 +9,7 @@
 </script>
 
 <section
-	class="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+	class="mb-4 overflow-hidden rounded-lg border border-slate-200 bg-white"
 	aria-labelledby={titleId}
 >
 	<header
