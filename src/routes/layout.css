@@ -37,35 +37,24 @@ body {
 	margin: 0;
 }
 
-@page :first {
-	margin: 0;
-}
-
-@page :left {
-	margin-top: 15mm;
-	margin-bottom: 0;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-@page :right {
-	margin-top: 15mm;
-	margin-bottom: 0;
-	margin-left: 0;
-	margin-right: 0;
-}
-
 @media print {
 	html,
 	body {
-		width: 210mm;
-		height: 297mm;
 		background: #ffffff;
+		width: auto;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		overflow: visible !important;
 	}
 	body {
-		margin: 0;
 		font-family: var(--app-print-font);
 		font-size: 10.5pt;
+	}
+
+	#svelte {
+		margin: 0;
+		padding: 0;
 	}
 
 	body > *:not(#svelte) {

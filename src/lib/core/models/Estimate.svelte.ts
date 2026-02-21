@@ -47,6 +47,10 @@ export class Estimate {
     return this.constructionPrice + this.taxAmount;
   }
 
+  addSection(title = `${this.sections.length + 1}. 新しいセクション`) {
+    this.sections.push(new Section(title));
+  }
+
   adjustToPrice(targetWithTax: number) {
     const targetBase = Math.ceil(targetWithTax / 1.10);
     const diff = targetBase - this.baseTotal;

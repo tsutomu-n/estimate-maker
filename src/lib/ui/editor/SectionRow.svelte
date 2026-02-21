@@ -9,32 +9,33 @@
 </script>
 
 <section
-	class="mb-4 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"
+	class="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
 	aria-labelledby={titleId}
 >
 	<header
-		class="flex flex-wrap justify-between gap-2 border-b border-slate-200 bg-slate-100 px-4 py-2"
+		class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2.5"
 	>
 		<div class="flex min-w-0 items-center gap-3">
 			<label class="sr-only" for={titleId}>セクション名</label>
 			<input
 				id={titleId}
-				class="font-ms-gothic w-full max-w-md min-w-0 border-none bg-transparent text-sm font-bold tracking-[0.04em] text-slate-700 focus:ring-0"
+				class="font-ms-gothic w-full max-w-md min-w-0 rounded border border-transparent bg-transparent px-1 py-0.5 text-sm font-bold tracking-[0.04em] text-slate-700 outline-none focus-visible:border-slate-300 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-blue-500"
 				bind:value={props.section.title}
 			/>
 		</div>
-		<p class="font-ms-gothic text-sm font-bold tracking-[0.04em] text-blue-900">
+		<p class="font-ms-gothic text-sm font-bold tracking-[0.04em] text-slate-700">
 			小計: ¥ {formatMoney(props.section.subTotal)}
 		</p>
 	</header>
 
 	<div class="p-2">
-		<div class="mb-1 grid grid-cols-12 gap-2 px-1 text-xs text-slate-500">
-			<div class="col-span-5">品名・備考</div>
-			<div class="col-span-2 text-right">数量</div>
-			<div class="col-span-1 text-center">単位</div>
-			<div class="col-span-2 text-right">単価</div>
-			<div class="col-span-2">金額</div>
+		<div class="mb-1 grid grid-cols-[5fr_2fr_1fr_2fr_2fr_auto] gap-2 px-1 text-xs text-slate-500">
+			<div>品名・備考</div>
+			<div class="text-right">数量</div>
+			<div class="text-center">単位</div>
+			<div class="text-right">単価</div>
+			<div class="text-right">金額</div>
+			<div class="w-7"></div>
 		</div>
 
 		{#each props.section.items as item, itemIndex}
@@ -48,7 +49,7 @@
 
 		<button
 			type="button"
-			class="mt-2 flex w-full items-center justify-center gap-1 rounded border border-dashed border-blue-300 py-1 text-sm text-blue-600 transition hover:bg-blue-50"
+			class="mt-2 flex h-9 w-full items-center justify-center gap-1 rounded-md border border-dashed border-blue-300 bg-blue-50/40 text-sm text-blue-700 transition hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:outline-none"
 			onclick={() => props.section.addItem()}
 			aria-label={`セクション ${props.sectionIndex + 1} に行を追加`}
 		>

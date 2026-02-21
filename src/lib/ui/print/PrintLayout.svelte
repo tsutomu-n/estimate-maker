@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { Estimate } from '$lib/core/models/Estimate.svelte';
-import { tick } from 'svelte';
-import { formatMoney } from '$lib/core/utils/money';
-import { resolvePrintTokens } from './print-theme';
-import { PRINT_TEXT } from './print-copy';
+	import type { Estimate } from '$lib/core/models/Estimate.svelte';
+	import { tick } from 'svelte';
+	import { formatMoney } from '$lib/core/utils/money';
+	import { resolvePrintTokens } from './print-theme';
+	import { PRINT_TEXT } from './print-copy';
 	import PrintHeader from './PrintHeader.svelte';
 	import PrintLineItemsTable from './PrintLineItemsTable.svelte';
 	import PrintTotals from './PrintTotals.svelte';
@@ -23,12 +23,14 @@ import { PRINT_TEXT } from './print-copy';
 		estimate,
 		fitMode = 'fit',
 		onA4PlanChange,
-		showSeal = false
+		showSeal = false,
+		enableA4Plan = true
 	}: {
 		estimate: Estimate;
 		fitMode?: 'fit' | 'a4';
 		onA4PlanChange?: (plan: A4PreviewPlan) => void;
 		showSeal?: boolean;
+		enableA4Plan?: boolean;
 	} = $props();
 
 	// 電子印鑑の表示状態 (デフォルトOFF)
@@ -216,7 +218,10 @@ import { PRINT_TEXT } from './print-copy';
 				termsPage = startPage;
 			}
 
-			if (sectionTitle && (kind === 'section-title' || kind === 'line-item' || kind === 'section-subtotal')) {
+			if (
+				sectionTitle &&
+				(kind === 'section-title' || kind === 'line-item' || kind === 'section-subtotal')
+			) {
 				const prev = sectionMap.get(sectionTitle);
 				if (!prev) {
 					sectionMap.set(sectionTitle, { title: sectionTitle, startPage, endPage });
@@ -234,18 +239,19 @@ import { PRINT_TEXT } from './print-copy';
 			totalsPage,
 			termsPage,
 			headerPage,
-			warning: maxPage > 10 ? 'A4実寸は10枚上限を超える可能性があります。内容を圧縮してください。' : null
+			warning:
+				maxPage > 10 ? 'A4実寸は10枚上限を超える可能性があります。内容を圧縮してください。' : null
 		};
 	}
 
 	$effect(() => {
-		if (fitMode === 'a4' && previewRoot && a4Deps >= 0) {
+		if (enableA4Plan && fitMode === 'a4' && previewRoot && a4Deps >= 0) {
 			updateA4PagePlan();
 		}
 	});
 
 	$effect(() => {
-		if (fitMode !== 'a4') {
+		if (!enableA4Plan || fitMode !== 'a4') {
 			a4Plan = {
 				totalPages: 0,
 				sections: [],
@@ -283,15 +289,10 @@ import { PRINT_TEXT } from './print-copy';
 <!-- A4用紙設定 -->
 <div
 	bind:this={previewRoot}
-	class="group relative mx-auto overflow-visible bg-white shadow-lg {baseStyle} {themeClass}"
+	class="group relative mx-auto overflow-visible bg-white shadow-lg print:mx-0 print:shadow-none {baseStyle} {themeClass}"
 	style={rootStyle}
 >
-	<PrintHeader
-		{estimate}
-		{showSeal}
-		{borderColor}
-		{subBorderColor}
-	/>
+	<PrintHeader {estimate} {showSeal} {borderColor} {subBorderColor} />
 
 	<!-- ========================================== -->
 	<!-- 御見積金額 (強調表示) -->
@@ -301,7 +302,7 @@ import { PRINT_TEXT } from './print-copy';
 		style="margin-bottom: var(--a4-amount-mb); padding: var(--a4-grand-total-py-outer) var(--a4-amount-px);"
 	>
 		<span class={totalLabelClass} style="font-size: var(--a4-font-amount-label);"
-				>{PRINT_TEXT.totals.grandTotal}</span
+			>{PRINT_TEXT.totals.grandTotal}</span
 		>
 		<span class="font-bold {numFont} tracking-tight" style="font-size: var(--a4-font-amount);">
 			¥ {formatMoney(estimate.grandTotal)} -
@@ -318,18 +319,12 @@ import { PRINT_TEXT } from './print-copy';
 		{tableWrapper}
 	/>
 
-	<PrintTotals
-		{estimate}
-		{borderColor}
-		{subBorderColor}
-		{numFont}
-		{subtotalAccentClass}
-	/>
+	<PrintTotals {estimate} {borderColor} {subBorderColor} {numFont} {subtotalAccentClass} />
 
 	<!-- ========================================== -->
 	<!-- 備考・条件（特約/備考がある場合のみ） -->
 	<!-- ========================================== -->
 	{#if terms.length > 0}
-		<PrintTerms terms={terms} />
+		<PrintTerms {terms} />
 	{/if}
 </div>
